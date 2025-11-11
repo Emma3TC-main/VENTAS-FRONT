@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 
 // ARREGLO 1: Importamos la clase "Principal"
 import { Principal } from './principal/principal'; 
@@ -9,7 +9,7 @@ import { Principal } from './principal/principal';
   standalone: true,
   
   // ARREGLO 2: Usamos "Principal" en el array de imports
-  imports: [RouterOutlet, Principal], 
+  imports: [RouterOutlet, Principal, RouterLink], 
   
   templateUrl: './app.html',
   styleUrl: './app.css'

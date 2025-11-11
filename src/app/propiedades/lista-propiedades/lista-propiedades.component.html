@@ -1,0 +1,92 @@
+<!-- src/app/propiedades/lista-propiedades/lista-propiedades.component.html -->
+<div class="min-h-screen bg-gray-100 pt-8 pb-16">
+    <div class="container mx-auto px-4 max-w-7xl">
+
+        <h1 class="text-4xl font-extrabold text-indigo-800 mb-10 text-center">
+            Lista de Propiedades en Gestión
+        </h1>
+
+        <div class="flex justify-end mb-8">
+            <a [routerLink]="['/registro-propiedad']"
+               class="px-6 py-3 text-white font-medium rounded-lg shadow-xl transition duration-150 bg-green-600 hover:bg-green-700">
+                Registrar Nueva Propiedad
+            </a>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-lg mb-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <input type="text" placeholder="Buscar por dirección o título..."
+                   class="flex-grow border border-gray-300 rounded-md p-3 focus:ring-indigo-500 focus:border-indigo-500" />
+            
+            <select class="border border-gray-300 rounded-md p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Filtrar por Estado</option>
+                <option>Disponible</option>
+                <option>Alquilada</option>
+                <option>Mantenimiento</option>
+            </select>
+            
+            <select class="border border-gray-300 rounded-md p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="" disabled selected>Ordenar por Precio</option>
+                <option>Mayor a menor</option>
+                <option>Menor a mayor</option>
+            </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div *ngFor="let propiedad of propiedades" 
+                 class="bg-white rounded-xl shadow-2xl overflow-hidden hover:shadow-indigo-400/50 transition duration-300 transform hover:scale-[1.02]">
+                
+                <div class="h-48 overflow-hidden">
+                    <img 
+                        [src]="'https://placehold.co/600x400/374151/ffffff?text=' + propiedad.nombre.replace(' ', '+')" 
+                        [alt]="propiedad.nombre" 
+                        class="w-full h-full object-cover"
+                    />
+                </div>
+
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-2 truncate">
+                        {{ propiedad.nombre }}
+                    </h2>
+                    <p class="text-gray-500 mb-4 truncate">
+                        {{ propiedad.direccion }}
+                    </p>
+                    
+                    <div class="flex justify-between items-center mb-4 border-b pb-4">
+                        <p class="text-xl font-extrabold text-green-600">
+                            {{ propiedad.rentaMes | currency: 'USD' }}
+                            <span class="text-sm font-normal text-gray-400">/ mes</span>
+                        </p>
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full"
+                              [ngClass]="{
+                                'bg-green-100 text-green-800': propiedad.estado === 'Disponible',
+                                'bg-yellow-100 text-yellow-800': propiedad.estado === 'Ocupada',
+                                'bg-red-100 text-red-800': propiedad.estado === 'En Mantenimiento'
+                              }">
+                            {{ propiedad.estado }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col space-y-3">
+                        
+                        <a [routerLink]="['/propiedades', propiedad.id]"
+                           class="w-full text-center bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-600 transition duration-150">
+                            Ver Detalle
+                        </a>
+                        
+                        <a [routerLink]="['/documentos', propiedad.id]"
+                           class="w-full text-center bg-purple-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-purple-600 transition duration-150">
+                            Gestionar Documentos
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="propiedades.length === 0" class="col-span-full text-center py-10 text-gray-500 text-lg">
+                No se encontraron propiedades. ¡Registra una nueva!
+            </div>
+
+        </div>
+    </div>
+</div>

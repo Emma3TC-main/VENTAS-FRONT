@@ -1,0 +1,185 @@
+<!-- src/app/propiedades/gestion-documentos/gestion-documentos.component.html -->
+<div class="min-h-screen bg-sky-100/50 pt-8 pb-16">
+  <div class="container mx-auto px-4 max-w-7xl">
+
+    <h1 class="text-4xl font-extrabold text-indigo-800 mb-10 text-center">
+      Gestión de Documentos (Propiedad ID: {{ propiedadId }})
+    </h1>
+
+    <a [routerLink]="['/propiedades']" class="inline-block mb-8 px-5 py-2 text-white rounded-lg transition duration-150 shadow-md bg-indigo-600 hover:bg-indigo-700">
+      Volver al listado de propiedades
+    </a>
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl mb-12">
+      <h2 class="text-2xl font-bold text-indigo-700 mb-6 border-b pb-2">
+          Carga de Documentos
+      </h2>
+      
+      <form [formGroup]="documentoForm" (ngSubmit)="subirDocumento()" class="grid grid-cols-1 md:grid-cols-5 gap-6">
+        
+        <div class="md:col-span-2 flex justify-center items-center border-4 border-dashed border-gray-300 rounded-xl p-8 cursor-pointer hover:border-indigo-500 transition duration-300 relative h-64"
+             (click)="fileInput.click()">
+             
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 text-gray-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6-6m-6 6l-6-6M9 14.25H5c-1.38 0-2.5-1.12-2.5-2.5V7.5c0-1.38 1.12-2.5 2.5-2.5h4.25M15 14.25h4.25c1.38 0 2.5-1.12 2.5-2.5V7.5c0-1.38-1.12-2.5-2.5-2.5H15M12 4.5V1.5" />
+            </svg>
+            
+            <p *ngIf="!f['archivo'].value" class="absolute bottom-4 text-gray-500 text-sm">Arrastra y suelta o haz clic para subir</p>
+            <p *ngIf="f['archivo'].value" class="absolute bottom-4 text-green-600 font-medium text-sm">Archivo listo: {{ f['archivo'].value.name }}</p>
+
+            <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
+        </div>
+
+        <div class="md:col-span-3 space-y-4">
+            <div class="flex space-x-4 items-end">
+                <div class="w-2/3">
+                    <label for="tipoDocumento" class="block text-sm font-medium text-gray-700">Tipo Documento</label>
+                    <select id="tipoDocumento" formControlName="tipoDocumento"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled>Seleccione un tipo</option>
+                        <option *ngFor="let tipo of tiposDocumento" [value]="tipo">{{ tipo }}</option>
+                    </select>
+                    <div *ngIf="f['tipoDocumento'].invalid && f['tipoDocumento'].touched" class="text-red-500 text-xs mt-1">
+                        Requerido.
+                    </div>
+                </div>
+
+                <button type="submit"
+                        [disabled]="documentoForm.invalid"
+                        class="w-1/3 px-4 py-2 text-white font-medium rounded-lg shadow-md bg-sky-500 hover:bg-sky-600 transition duration-150 disabled:bg-gray-400">
+                    Subir Documento
+                </button>
+            </div>
+
+            <div>
+                <label for="nombreDocumento" class="block text-sm font-medium text-gray-700">Nombre del Documento</label>
+                <input id="nombreDocumento" type="text" formControlName="nombreDocumento"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <div *ngIf="f['nombreDocumento'].invalid && f['nombreDocumento'].touched" class="text-red-500 text-xs mt-1">
+                    Requerido.
+                </div>
+            </div>
+
+            <div>
+                <label for="descripcionDocumento" class="block text-sm font-medium text-gray-700">Descripción del Documento</label>
+                <textarea id="descripcionDocumento" formControlName="descripcionDocumento" rows="3"
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"></textarea>
+            </div>
+            
+            <div *ngIf="f['archivo'].invalid && f['archivo'].touched" class="text-red-500 text-xs mt-1">
+                Debe seleccionar un archivo para subir.
+            </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4 border-b pb-2">
+                Registro de Documento
+            </h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
+                                <input type="checkbox" class="rounded text-indigo-600">
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nombre
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tipo
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Fecha de Carga
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Estado
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr *ngFor="let doc of documentos">
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">
+                                <input type="checkbox" (change)="marcarDocumento(doc, $event)" class="rounded text-indigo-600">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ doc.nombre }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ doc.tipo }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ doc.fechaCarga }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                                      [ngClass]="{
+                                        'bg-green-100 text-green-800': doc.estado === 'Aprobado',
+                                        'bg-yellow-100 text-yellow-800': doc.estado === 'Pendiente',
+                                        'bg-red-100 text-red-800': doc.estado === 'Rechazado'
+                                      }">
+                                    {{ doc.estado }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                <button (click)="descargarDocumento(doc)"
+                                        class="px-3 py-1 text-white text-xs font-medium rounded-lg shadow-sm bg-sky-500 hover:bg-sky-600 transition duration-150">
+                                    Descargar
+                                </button>
+                                <button (click)="eliminarDocumento(doc.id)"
+                                        class="px-3 py-1 text-white text-xs font-medium rounded-lg shadow-sm bg-red-500 hover:bg-red-600 transition duration-150">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="documentos.length === 0" class="text-center py-4 text-gray-500">No hay documentos registrados para esta propiedad.</div>
+            </div>
+        </div>
+        
+        <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-2xl space-y-4">
+            
+            <button (click)="verDocumentoMarcado()"
+                    class="w-full px-4 py-2 text-white font-medium rounded-lg shadow-lg bg-sky-500 hover:bg-sky-600 transition duration-150 disabled:bg-gray-400"
+                    [disabled]="documentosMarcados.length !== 1">
+                Ver Documento Marcado
+            </button>
+            
+            <h3 class="text-lg font-semibold text-gray-700 pt-2 border-t mt-4">Filtros (Simulados)</h3>
+            
+            <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm">
+                <option value="" disabled selected>Nombre</option>
+                <option>Ordenar A-Z</option>
+                <option>Ordenar Z-A</option>
+            </select>
+            
+            <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm">
+                <option value="" disabled selected>Tipo</option>
+                <option *ngFor="let tipo of tiposDocumento" [value]="tipo">{{ tipo }}</option>
+            </select>
+            
+            <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm">
+                <option value="" disabled selected>Fecha</option>
+                <option>Más recientes</option>
+                <option>Más antiguos</option>
+            </select>
+            
+            <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm">
+                <option value="" disabled selected>Estado</option>
+                <option>Aprobado</option>
+                <option>Pendiente</option>
+                <option>Rechazado</option>
+            </select>
+        </div>
+
+    </div>
+  </div>
+</div>

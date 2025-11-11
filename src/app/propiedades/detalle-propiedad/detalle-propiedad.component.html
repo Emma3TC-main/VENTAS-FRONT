@@ -1,0 +1,288 @@
+<div class="min-h-screen bg-sky-100/50 pt-8 pb-16">
+  <div class="container mx-auto px-4 max-w-7xl">
+
+    <div *ngIf="propiedad">
+        <a [routerLink]="['/propiedades']" class="inline-block mb-8 px-5 py-2 text-white rounded-lg transition duration-150 shadow-md bg-indigo-600 hover:bg-indigo-700">
+          Volver a la Lista de Propiedades
+        </a>
+
+        <h1 class="text-4xl font-extrabold text-indigo-800 mb-10 text-center">
+          Información de la Propiedad (ID: {{ propiedad.id }})
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <div class="shadow-xl rounded-2xl overflow-hidden">
+                <img 
+                    src="https://placehold.co/800x600/1e3a8a/ffffff?text=Imagen+de+la+Propiedad" 
+                    alt="Imagen de la propiedad" 
+                    class="w-full h-96 object-cover"
+                />
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-indigo-700 mb-6 border-b pb-2">
+                  Información General de la Propiedad
+                </h2>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>ID de Propiedad:</strong> <span class="text-gray-900">{{ propiedad.id }}</span></p>
+                    <p><strong>Título de la Propiedad:</strong> <span class="text-gray-900">{{ propiedad.nombre }}</span></p>
+                    <p><strong>Dirección:</strong> <span class="text-gray-900">{{ propiedad.direccion }}</span></p>
+                    <p><strong>Renta al Mes:</strong> <span class="text-green-600 font-semibold">{{ propiedad.rentaMes | currency: 'USD' }}</span></p>
+                    <p><strong>Estado de la Propiedad:</strong> <span class="font-semibold text-orange-500">{{ propiedad.estado }}</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 bg-white p-8 rounded-2xl shadow-xl">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-6 border-b pb-2">
+              Información Detallada de la Propiedad
+            </h2>
+            
+            <div class="space-y-4 text-gray-700">
+                <p><strong>Título de la Propiedad:</strong> <span class="text-gray-900">{{ propiedad.nombre }}</span></p>
+                
+                <div class="flex items-center space-x-3 py-2">
+                  <strong>Acciones:</strong>
+                  <button (click)="abrirEditarModal()" class="px-4 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition duration-150 shadow-sm">Editar Datos</button>
+                  <a [routerLink]="['/contrato', propiedad.id]" class="px-4 py-2 text-sm rounded-lg shadow-md bg-teal-500 text-white hover:bg-teal-600 transition duration-150 cursor-pointer"> Generar Contrato </a>
+                  <a [routerLink]="['/documentos', propiedad.id]" class="px-4 py-2 text-sm rounded-lg shadow-md bg-purple-500 text-white hover:bg-purple-600 transition duration-150 cursor-pointer"> Documentos </a>
+                  <button (click)="abrirMantenimientoModal()" class="px-4 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition duration-150 shadow-sm">Mantenimiento</button>
+                </div>
+
+                <p><strong>Estado Actual de la Propiedad:</strong> <span class="font-semibold text-orange-500">{{ propiedad.estadoDetalle || propiedad.estado }}</span></p>
+                <p><strong>Propietario:</strong> <span class="text-gray-900">{{ propiedad.propietario }}</span></p>
+                
+                <div class="border p-4 rounded-lg bg-gray-50">
+                    <p class="font-semibold mb-1">Descripción exterior:</p>
+                    <p class="whitespace-pre-wrap">{{ propiedad.descripcionExterior }}</p>
+                </div>
+                <div class="border p-4 rounded-lg bg-gray-50">
+                    <p class="font-semibold mb-1">Descripción interior:</p>
+                    <p class="whitespace-pre-wrap">{{ propiedad.descripcionInterior }}</p>
+                </div>
+                
+                <p><strong>Dirección Completa:</strong> <span class="text-gray-900">{{ propiedad.direccionCompleta }}</span></p>
+                <p><strong>Ubicación en el mapa:</strong> <a href="#" class="text-blue-500 hover:underline">(Google maps)</a></p>
+            </div>
+
+            <div class="mt-8 text-center">
+                <button (click)="abrirContratoModal()"
+                    class="px-8 py-3 bg-cyan-500 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-cyan-600 transition duration-300">
+                    Ver Contrato Vigente
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="!propiedad" class="text-center py-10 text-xl text-gray-500">
+        Cargando información o propiedad no válida...
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarContratoModal && propiedad" 
+     class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 flex items-center justify-center transition-opacity duration-300"
+     (click)="cerrarContratoModal()">
+
+    <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 w-11/12 max-w-3xl transform transition-all duration-300 scale-100"
+         (click)="$event.stopPropagation()">
+
+        <div class="flex justify-between items-center border-b pb-4 mb-4">
+            <h3 class="text-2xl font-bold text-indigo-700">Contrato de Arrendamiento - Propiedad ID {{ propiedad.id }}</h3>
+            <button (click)="cerrarContratoModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-semibold">
+                &times;
+            </button>
+        </div>
+
+        <div class="max-h-[60vh] overflow-y-auto p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-inner">
+            <pre class="whitespace-pre-wrap text-sm font-mono text-gray-800">{{ contratoSimulado }}</pre>
+            
+            <p class="mt-6 text-center text-sm text-gray-600 italic">
+                Este es un contrato simulado para fines de visualización.
+            </p>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button (click)="cerrarContratoModal()"
+                    class="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-600 transition duration-150">
+                Cerrar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="mostrarEditarModal && propiedadEditable" 
+     class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 flex items-center justify-center transition-opacity duration-300"
+     (click)="cerrarEditarModal()">
+
+    <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 w-11/12 max-w-4xl transform transition-all duration-300 scale-100"
+         (click)="$event.stopPropagation()">
+
+        <div class="flex justify-between items-center border-b pb-4 mb-4">
+            <h3 class="text-2xl font-bold text-indigo-700">Editar Propiedad - ID {{ propiedadEditable.id }}</h3>
+            <button (click)="cerrarEditarModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-semibold">
+                &times;
+            </button>
+        </div>
+
+        <div class="max-h-[70vh] overflow-y-auto p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-inner">
+            <form (ngSubmit)="guardarEdicion()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="col-span-1">
+                    <label for="nombre" class="block text-sm font-medium text-gray-700">Título de la Propiedad</label>
+                    <input type="text" id="nombre" name="nombre" [(ngModel)]="propiedadEditable.nombre" 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="col-span-1">
+                    <label for="rentaMes" class="block text-sm font-medium text-gray-700">Renta Mensual (USD)</label>
+                    <input type="number" id="rentaMes" name="rentaMes" [(ngModel)]="propiedadEditable.rentaMes" 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="col-span-1">
+                    <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
+                    <input type="text" id="direccion" name="direccion" [(ngModel)]="propiedadEditable.direccion" 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div class="col-span-1">
+                    <label for="propietario" class="block text-sm font-medium text-gray-700">Propietario</label>
+                    <input type="text" id="propietario" name="propietario" [(ngModel)]="propiedadEditable.propietario" 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div class="col-span-1">
+                    <label for="estado" class="block text-sm font-medium text-gray-700">Estado de la Propiedad</label>
+                    <select id="estado" name="estado" [(ngModel)]="propiedadEditable.estado"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="Disponible">Disponible</option>
+                        <option value="Ocupada">Ocupada</option>
+                        <option value="En Mantenimiento">En Mantenimiento</option>
+                    </select>
+                </div>
+                
+                <div class="col-span-1">
+                    <label for="estadoDetalle" class="block text-sm font-medium text-gray-700">Detalle de Estado</label>
+                    <input type="text" id="estadoDetalle" name="estadoDetalle" [(ngModel)]="propiedadEditable.estadoDetalle" 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="col-span-2">
+                    <label for="descripcionExterior" class="block text-sm font-medium text-gray-700">Descripción Exterior</label>
+                    <textarea id="descripcionExterior" name="descripcionExterior" rows="3" [(ngModel)]="propiedadEditable.descripcionExterior"
+                              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+
+                <div class="col-span-2">
+                    <label for="descripcionInterior" class="block text-sm font-medium text-gray-700">Descripción Interior</label>
+                    <textarea id="descripcionInterior" name="descripcionInterior" rows="3" [(ngModel)]="propiedadEditable.descripcionInterior"
+                              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+                
+                <div class="col-span-2">
+                    <label for="direccionCompleta" class="block text-sm font-medium text-gray-700">Dirección Completa</label>
+                    <input type="text" id="direccionCompleta" name="direccionCompleta" [(ngModel)]="propiedadEditable.direccionCompleta" 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="col-span-2 flex justify-end space-x-4 pt-4 border-t mt-4">
+                    <button type="button" (click)="cerrarEditarModal()"
+                            class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 transition duration-150">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                            class="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-150">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="mostrarMantenimientoModal" 
+     class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 flex items-center justify-center transition-opacity duration-300"
+     (click)="cerrarMantenimientoModal()">
+
+    <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 w-11/12 max-w-5xl transform transition-all duration-300 scale-100"
+         (click)="$event.stopPropagation()">
+
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h3 class="text-2xl font-bold text-teal-700">Gestión de Mantenimiento - Propiedad ID {{ propiedad?.id }}</h3>
+            <button (click)="cerrarMantenimientoModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-semibold">
+                &times;
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 bg-teal-50 p-5 rounded-xl shadow-inner h-full">
+                <h4 class="text-xl font-semibold text-teal-800 mb-4 border-b pb-2">Registrar Nuevo Reporte</h4>
+                <form (ngSubmit)="registrarMantenimiento()" class="space-y-4">
+                    <div>
+                        <label for="mantenimientoFecha" class="block text-sm font-medium text-gray-700">Fecha de Reporte</label>
+                        <input type="date" id="mantenimientoFecha" name="mantenimientoFecha" [(ngModel)]="nuevoMantenimiento.fecha" 
+                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring-teal-500 focus:border-teal-500">
+                    </div>
+                    <div>
+                        <label for="mantenimientoDescripcion" class="block text-sm font-medium text-gray-700">Descripción del Problema</label>
+                        <textarea id="mantenimientoDescripcion" name="mantenimientoDescripcion" rows="4" [(ngModel)]="nuevoMantenimiento.descripcion" 
+                                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Ej: Fuga de agua en el baño principal."></textarea>
+                    </div>
+                    <button type="submit" [disabled]="!nuevoMantenimiento.descripcion"
+                            class="w-full px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transition duration-150 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                        Añadir a Historial
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2">
+                <h4 class="text-xl font-semibold text-teal-800 mb-4 border-b pb-2">Historial ({{ historialMantenimientos.length }} registros)</h4>
+                
+                <div *ngIf="historialMantenimientos.length > 0" class="space-y-4 max-h-[55vh] overflow-y-auto pr-2">
+                    <div *ngFor="let item of historialMantenimientos" 
+                         class="p-4 rounded-lg shadow-md flex justify-between items-start"
+                         [ngClass]="{
+                            'bg-red-100 border-l-4 border-red-500': item.estado === 'Pendiente',
+                            'bg-yellow-100 border-l-4 border-yellow-500': item.estado === 'En Progreso',
+                            'bg-green-100 border-l-4 border-green-500': item.estado === 'Completado'
+                         }">
+                        
+                        <div class="flex-grow">
+                            <p class="font-bold text-gray-800">{{ item.descripcion }}</p>
+                            <p class="text-sm text-gray-600">Fecha: {{ item.fecha }}</p>
+                            <p class="text-xs text-gray-500 mt-1">Costo: {{ item.costo | currency: 'USD' }}</p>
+                        </div>
+                        
+                        <div class="ml-4 flex-shrink-0">
+                            <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full"
+                                  [ngClass]="{
+                                      'bg-red-500 text-white': item.estado === 'Pendiente',
+                                      'bg-yellow-500 text-gray-900': item.estado === 'En Progreso',
+                                      'bg-green-500 text-white': item.estado === 'Completado'
+                                  }">
+                                {{ item.estado }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div *ngIf="historialMantenimientos.length === 0" class="text-center py-10 text-gray-500">
+                    No hay registros de mantenimiento para esta propiedad.
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="mt-6 flex justify-end pt-4 border-t">
+            <button (click)="cerrarMantenimientoModal()"
+                    class="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-600 transition duration-150">
+                Cerrar
+            </button>
+        </div>
+
+    </div>
+</div>
