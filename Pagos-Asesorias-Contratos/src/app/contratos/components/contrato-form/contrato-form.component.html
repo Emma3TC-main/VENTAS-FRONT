@@ -1,0 +1,300 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
+  <div class="max-w-3xl mx-auto">
+    
+    <!-- Header dinámico según modo -->
+    <div class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl shadow-xl p-8 mb-8 text-white">
+      <div class="flex items-center gap-4">
+        <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+          <span class="text-4xl">{{ isEditMode ? '✏️' : '📄' }}</span>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold mb-2">
+            {{ isEditMode ? 'Editar Contrato' : 'Nuevo Contrato' }}
+          </h2>
+          <p class="text-cyan-50 text-sm">
+            {{ isEditMode ? 'Actualiza la información del contrato existente' : 'Completa los datos para crear un nuevo contrato' }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario principal -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+      
+      <!-- Barra superior decorativa -->
+      <div class="h-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"></div>
+      
+      <div class="p-8">
+        <form [formGroup]="contratoForm" (ngSubmit)="onSubmit()" novalidate class="space-y-6">
+          
+          <!-- Campo Cliente -->
+          <div class="group">
+            <label for="cliente" class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+              <span class="text-lg">👤</span>
+              <span>Cliente</span>
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                id="cliente"
+                type="text"
+                formControlName="cliente"
+                placeholder="Ingrese el nombre del cliente..."
+                class="w-full border-2 rounded-xl p-4 pl-12 transition-all duration-300 text-gray-700 font-medium
+                       focus:outline-none focus:ring-4
+                       {{ cliente?.invalid && (cliente?.touched || cliente?.dirty) 
+                          ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 
+                          : 'border-gray-200 focus:border-cyan-400 focus:ring-cyan-100' }}"
+                [class.border-green-300]="cliente?.valid && cliente?.touched"
+                aria-describedby="clienteError"
+              />
+              <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">👤</span>
+              
+              <!-- Check verde cuando es válido -->
+              <span *ngIf="cliente?.valid && cliente?.touched" 
+                    class="absolute right-4 top-1/2 transform -translate-y-1/2 text-green-500 text-xl animate-bounce">
+                ✓
+              </span>
+            </div>
+            <div
+              *ngIf="cliente?.invalid && (cliente?.touched || cliente?.dirty)"
+              id="clienteError"
+              class="flex items-center gap-2 text-red-600 mt-2 text-sm font-medium animate-shake"
+            >
+              <span>⚠️</span>
+              <span>El cliente es obligatorio.</span>
+            </div>
+          </div>
+
+          <!-- Campo Inmueble -->
+          <div class="group">
+            <label for="inmueble" class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+              <span class="text-lg">🏢</span>
+              <span>Inmueble</span>
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                id="inmueble"
+                type="text"
+                formControlName="inmueble"
+                placeholder="Ingrese la dirección o descripción del inmueble..."
+                class="w-full border-2 rounded-xl p-4 pl-12 transition-all duration-300 text-gray-700 font-medium
+                       focus:outline-none focus:ring-4
+                       {{ inmueble?.invalid && (inmueble?.touched || inmueble?.dirty) 
+                          ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 
+                          : 'border-gray-200 focus:border-cyan-400 focus:ring-cyan-100' }}"
+                [class.border-green-300]="inmueble?.valid && inmueble?.touched"
+                aria-describedby="inmuebleError"
+              />
+              <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">🏢</span>
+              
+              <span *ngIf="inmueble?.valid && inmueble?.touched" 
+                    class="absolute right-4 top-1/2 transform -translate-y-1/2 text-green-500 text-xl animate-bounce">
+                ✓
+              </span>
+            </div>
+            <div
+              *ngIf="inmueble?.invalid && (inmueble?.touched || inmueble?.dirty)"
+              id="inmuebleError"
+              class="flex items-center gap-2 text-red-600 mt-2 text-sm font-medium"
+            >
+              <span>⚠️</span>
+              <span>El inmueble es obligatorio.</span>
+            </div>
+          </div>
+
+          <!-- Fechas en grid -->
+          <div class="grid md:grid-cols-2 gap-6">
+            
+            <!-- Fecha Inicio -->
+            <div class="group">
+              <label for="fechaInicio" class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+                <span class="text-lg">📅</span>
+                <span>Fecha Inicio</span>
+                <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  id="fechaInicio"
+                  type="date"
+                  formControlName="fechaInicio"
+                  class="w-full border-2 rounded-xl p-4 pl-12 transition-all duration-300 text-gray-700 font-medium
+                         focus:outline-none focus:ring-4
+                         {{ fechaInicio?.invalid && (fechaInicio?.touched || fechaInicio?.dirty) 
+                            ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 
+                            : 'border-gray-200 focus:border-blue-400 focus:ring-blue-100' }}"
+                  [class.border-green-300]="fechaInicio?.valid && fechaInicio?.touched"
+                  aria-describedby="fechaInicioError"
+                />
+                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">📅</span>
+                
+                <span *ngIf="fechaInicio?.valid && fechaInicio?.touched" 
+                      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-green-500 text-xl animate-bounce">
+                  ✓
+                </span>
+              </div>
+              <div
+                *ngIf="fechaInicio?.invalid && (fechaInicio?.touched || fechaInicio?.dirty)"
+                id="fechaInicioError"
+                class="flex items-center gap-2 text-red-600 mt-2 text-sm font-medium"
+              >
+                <span>⚠️</span>
+                <span>La fecha de inicio es obligatoria.</span>
+              </div>
+            </div>
+
+            <!-- Fecha Fin -->
+            <div class="group">
+              <label for="fechaFin" class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+                <span class="text-lg">🏁</span>
+                <span>Fecha Fin</span>
+                <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  id="fechaFin"
+                  type="date"
+                  formControlName="fechaFin"
+                  class="w-full border-2 rounded-xl p-4 pl-12 transition-all duration-300 text-gray-700 font-medium
+                         focus:outline-none focus:ring-4
+                         {{ fechaFin?.invalid && (fechaFin?.touched || fechaFin?.dirty) 
+                            ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 
+                            : 'border-gray-200 focus:border-blue-400 focus:ring-blue-100' }}"
+                  [class.border-green-300]="fechaFin?.valid && fechaFin?.touched"
+                  aria-describedby="fechaFinError"
+                />
+                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">🏁</span>
+                
+                <span *ngIf="fechaFin?.valid && fechaFin?.touched" 
+                      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-green-500 text-xl animate-bounce">
+                  ✓
+                </span>
+              </div>
+              <div
+                *ngIf="fechaFin?.invalid && (fechaFin?.touched || fechaFin?.dirty)"
+                id="fechaFinError"
+                class="flex items-center gap-2 text-red-600 mt-2 text-sm font-medium"
+              >
+                <span>⚠️</span>
+                <span>La fecha fin es obligatoria.</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Campo Estado -->
+          <div class="group">
+            <label for="estado" class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+              <span class="text-lg">📊</span>
+              <span>Estado</span>
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="estado"
+                formControlName="estado"
+                class="w-full border-2 rounded-xl p-4 pl-12 pr-10 appearance-none transition-all duration-300 text-gray-700 font-medium
+                       focus:outline-none focus:ring-4 cursor-pointer
+                       {{ estado?.invalid && (estado?.touched || estado?.dirty) 
+                          ? 'border-red-300 focus:border-red-400 focus:ring-red-100' 
+                          : 'border-gray-200 focus:border-purple-400 focus:ring-purple-100' }}"
+                [class.border-green-300]="estado?.valid && estado?.touched"
+                aria-describedby="estadoError"
+              >
+                <option value="" disabled>Seleccione un estado</option>
+                <option *ngFor="let est of estados" [value]="est">{{ est }}</option>
+              </select>
+              <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">📊</span>
+              
+              <!-- Flecha personalizada -->
+              <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </span>
+            </div>
+            <div
+              *ngIf="estado?.invalid && (estado?.touched || estado?.dirty)"
+              id="estadoError"
+              class="flex items-center gap-2 text-red-600 mt-2 text-sm font-medium"
+            >
+              <span>⚠️</span>
+              <span>El estado es obligatorio.</span>
+            </div>
+          </div>
+
+          <!-- Mensaje de error general -->
+          <div *ngIf="errorMessage" 
+               class="bg-red-50 border-l-4 border-red-500 rounded-xl p-4 flex items-start gap-3 animate-shake">
+            <span class="text-2xl">❌</span>
+            <div class="flex-1">
+              <h4 class="font-bold text-red-800 mb-1">Error al procesar</h4>
+              <p class="text-red-600 font-medium">{{ errorMessage }}</p>
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t-2 border-gray-100">
+            
+            <!-- Botón Guardar/Actualizar -->
+            <button
+              type="submit"
+              [disabled]="loading || contratoForm.invalid"
+              class="flex-1 group relative bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg
+                     hover:shadow-cyan-400/50 hover:-translate-y-1 
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-lg
+                     transition-all duration-300 overflow-hidden"
+            >
+              <span class="relative z-10 flex items-center justify-center gap-2">
+                <span *ngIf="!loading">{{ isEditMode ? '💾' : '✨' }}</span>
+                <span *ngIf="loading" class="inline-block w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></span>
+                <span>{{ loading ? 'Procesando...' : (isEditMode ? 'Actualizar Contrato' : 'Guardar Contrato') }}</span>
+              </span>
+              
+              <!-- Efecto de brillo -->
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </button>
+
+            <!-- Botón Cancelar -->
+            <button
+              type="button"
+              (click)="onCancel()"
+              [disabled]="loading"
+              class="flex-1 sm:flex-none bg-white border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-bold
+                     hover:border-gray-400 hover:bg-gray-50 hover:shadow-md
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              <span>❌</span>
+              <span>Cancelar</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Indicador de campos requeridos -->
+    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+      <span class="text-xl">💡</span>
+      <div class="text-sm text-blue-700">
+        <p class="font-semibold mb-1">Campos obligatorios</p>
+        <p>Los campos marcados con <span class="text-red-500 font-bold">*</span> son requeridos para guardar el contrato.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+</style>
