@@ -1,0 +1,182 @@
+<div class="p-6 space-y-8">
+
+  <!-- TÍTULO -->
+  <h1 class="text-3xl font-bold text-emerald-600">📄 Gestión de Contratos</h1>
+
+  <!-- TARJETAS DE ESTADÍSTICAS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <div class="bg-white shadow-md rounded-xl p-4 border-l-4 border-emerald-500">
+      <p class="text-gray-600">Contratos Activos</p>
+      <p class="text-3xl font-bold text-emerald-600">{{ activos() }}</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-xl p-4 border-l-4 border-yellow-500">
+      <p class="text-gray-600">Pendientes</p>
+      <p class="text-3xl font-bold text-yellow-600">{{ pendientes() }}</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-xl p-4 border-l-4 border-blue-500">
+      <p class="text-gray-600">Total de Contratos</p>
+      <p class="text-3xl font-bold text-blue-600">{{ contratos().length }}</p>
+    </div>
+
+  </div>
+
+  <!-- FORMULARIO PARA AGREGAR CONTRATO -->
+  <div class="bg-white rounded-xl shadow-md p-6">
+    <h2 class="text-xl font-semibold text-emerald-600 mb-4">➕ Nuevo Contrato</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div>
+        <label class="font-medium">Cliente</label>
+        <input
+          type="text"
+          class="w-full border rounded-lg p-2 mt-1"
+          [(ngModel)]="nuevoContrato().cliente"
+        >
+      </div>
+
+      <div>
+        <label class="font-medium">Fecha</label>
+        <input
+          type="date"
+          class="w-full border rounded-lg p-2 mt-1"
+          [(ngModel)]="nuevoContrato().fecha"
+        >
+      </div>
+
+      <div>
+        <label class="font-medium">Monto</label>
+        <input
+          type="number"
+          class="w-full border rounded-lg p-2 mt-1"
+          [(ngModel)]="nuevoContrato().monto"
+        >
+      </div>
+
+      <div>
+        <label class="font-medium">Estado</label>
+        <select
+          class="w-full border rounded-lg p-2 mt-1"
+          [(ngModel)]="nuevoContrato().estado"
+        >
+          <option>Activo</option>
+          <option>Pendiente</option>
+          <option>Finalizado</option>
+        </select>
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="font-medium">Descripción</label>
+        <textarea
+          class="w-full border rounded-lg p-2 mt-1"
+          rows="3"
+          [(ngModel)]="nuevoContrato().descripcion"
+        ></textarea>
+      </div>
+
+    </div>
+
+    <button
+      class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-lg"
+      (click)="agregarContrato()"
+    >
+      Guardar Contrato
+    </button>
+  </div>
+
+  <!-- BUSCADOR -->
+  <div class="flex justify-between items-center mt-8">
+    <h2 class="text-xl font-semibold text-gray-700">📑 Lista de Contratos</h2>
+
+    <input
+      type="text"
+      placeholder="Buscar por cliente o estado..."
+      class="border rounded-lg p-2 w-64"
+      [ngModel]="filtroTexto()"
+      (ngModelChange)="filtroTexto.set($event)"
+    >
+  </div>
+
+  <!-- TABLA -->
+  <div class="overflow-x-auto border rounded-xl shadow-md">
+    <table class="w-full text-left min-w-[800px] bg-white">
+
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
+        <tr>
+          <th class="p-3">ID</th>
+          <th class="p-3">Cliente</th>
+          <th class="p-3">Fecha</th>
+          <th class="p-3">Monto</th>
+          <th class="p-3">Estado</th>
+          <th class="p-3">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let c of contratosFiltrados(); let i = index" class="border-b hover:bg-gray-50">
+          <td class="p-3">{{ c.id }}</td>
+          <td class="p-3">{{ c.cliente }}</td>
+          <td class="p-3">{{ c.fecha }}</td>
+          <td class="p-3">${{ c.monto }}</td>
+
+          <td class="p-3">
+            <span 
+              class="px-2 py-1 rounded-full text-xs font-semibold"
+              [ngClass]="{
+                'bg-emerald-100 text-emerald-700': c.estado === 'Activo',
+                'bg-yellow-100 text-yellow-700': c.estado === 'Pendiente',
+                'bg-red-100 text-red-700': c.estado === 'Finalizado'
+              }"
+            >
+              {{ c.estado }}
+            </span>
+          </td>
+
+          <td class="p-3">
+            <button
+              class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
+              (click)="abrirModal(c)"
+            >
+              Ver
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="contratosFiltrados().length === 0">
+          <td colspan="6" class="p-4 text-center text-gray-500">No hay contratos</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MODAL -->
+  <div
+    *ngIf="modalAbierto()"
+    class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center p-4"
+  >
+    <div class="bg-white shadow-xl rounded-xl p-6 w-full max-w-lg">
+      <h2 class="text-xl font-semibold text-emerald-600 mb-4">Detalles del Contrato</h2>
+
+      <p><strong>ID:</strong> {{ contratoSeleccionado()?.id }}</p>
+      <p><strong>Cliente:</strong> {{ contratoSeleccionado()?.cliente }}</p>
+      <p><strong>Fecha:</strong> {{ contratoSeleccionado()?.fecha }}</p>
+      <p><strong>Monto:</strong> ${{ contratoSeleccionado()?.monto }}</p>
+      <p><strong>Estado:</strong> {{ contratoSeleccionado()?.estado }}</p>
+      <p class="mt-2"><strong>Descripción:</strong></p>
+      <p class="text-gray-700">{{ contratoSeleccionado()?.descripcion }}</p>
+
+      <button
+        class="mt-6 bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg"
+        (click)="cerrarModal()"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+
+</div>

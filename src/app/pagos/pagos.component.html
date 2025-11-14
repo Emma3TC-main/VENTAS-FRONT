@@ -1,0 +1,119 @@
+<div class="min-h-screen bg-gray-100 flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-white shadow-md p-5 border-r">
+    <h2 class="text-xl font-bold mb-4">Panel</h2>
+
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-3">
+      <p class="font-semibold text-gray-700">Pagos realizados:</p>
+      <p class="text-3xl font-bold text-green-600">{{ totalPagos }}</p>
+    </div>
+
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-3">
+      <p class="font-semibold text-gray-700">Método más usado:</p>
+      <p class="text-xl font-bold">{{ metodoMasUsado }}</p>
+    </div>
+
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+      <p class="font-semibold text-gray-700">Total recaudado:</p>
+      <p class="text-3xl font-bold text-purple-600">S/. {{ totalRecaudado }}</p>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 p-8">
+
+    <h1 class="text-3xl font-bold text-green-600 mb-6 flex items-center gap-2">💰 Gestión de Pagos</h1>
+
+    <!-- FORMULARIO -->
+    <div class="bg-white shadow rounded-lg p-6 mb-6">
+      <h3 class="text-xl font-semibold mb-4">Registrar Pago</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- Cliente -->
+        <div>
+          <label class="block font-medium mb-1">Cliente</label>
+          <input 
+            type="text"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="Nombre del cliente"
+            [value]="cliente"
+            (input)="cliente = $any($event.target).value"
+          />
+        </div>
+
+        <!-- Monto -->
+        <div>
+          <label class="block font-medium mb-1">Monto (S/.)</label>
+          <input 
+            type="number"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="Monto"
+            [value]="monto"
+            (input)="monto = $any($event.target).valueAsNumber"
+          />
+        </div>
+
+        <!-- Método -->
+        <div>
+          <label class="block font-medium mb-1">Método de pago</label>
+          <select
+            class="w-full border rounded-lg px-3 py-2"
+            [value]="metodoSeleccionado"
+            (change)="metodoSeleccionado = $any($event.target).value"
+          >
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Transferencia">Transferencia</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button 
+        class="mt-4 bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition"
+        (click)="registrarPago()"
+      >
+        Registrar Pago
+      </button>
+    </div>
+
+    <!-- TABLA -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h3 class="text-xl font-semibold mb-4">Listado de Pagos</h3>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full border rounded-lg overflow-hidden">
+          <thead class="bg-green-200">
+            <tr>
+              <th class="px-4 py-2 border">#</th>
+              <th class="px-4 py-2 border">Cliente</th>
+              <th class="px-4 py-2 border">Método</th>
+              <th class="px-4 py-2 border">Monto</th>
+              <th class="px-4 py-2 border">Fecha</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let pago of listaPagos; let i = index" class="hover:bg-gray-50">
+              <td class="px-4 py-2 border">{{ i + 1 }}</td>
+              <td class="px-4 py-2 border">{{ pago.cliente }}</td>
+              <td class="px-4 py-2 border">{{ pago.metodo }}</td>
+              <td class="px-4 py-2 border">S/. {{ pago.monto }}</td>
+              <td class="px-4 py-2 border">{{ pago.fecha }}</td>
+            </tr>
+
+            <tr *ngIf="listaPagos.length === 0">
+              <td colspan="5" class="text-center text-gray-400 py-4">
+                No hay pagos registrados aún.
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>

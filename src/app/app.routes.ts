@@ -17,6 +17,11 @@ import { InquilinosComponent } from './reportes/inquilinos/inquilinos.component'
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 
+// 🔹 NUEVOS COMPONENTES (solo frontend)
+import { AsesoriasComponent } from './asesorias/asesorias.component';
+import { PagosComponent } from './pagos/pagos.component';
+import { ContratosComponent } from './contratos/contratos.component';
+
 export const routes: Routes = [
 
   // 🔹 Pantalla principal por defecto
@@ -44,6 +49,12 @@ export const routes: Routes = [
     title: 'Gestión de Documentos' 
   },
 
+  // 🔹 NUEVAS RUTAS (AGREGADAS)
+  { path: 'asesorias', component: AsesoriasComponent },
+  { path: 'pagos', component: PagosComponent },
+  { path: 'contratos', component: ContratosComponent },
+
+  // 🔹 Rutas de Reportes
   { 
     path: 'reportes', 
     component: ReportesComponent,
