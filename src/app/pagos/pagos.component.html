@@ -38,8 +38,8 @@
             type="text"
             class="w-full border rounded-lg px-3 py-2"
             placeholder="Nombre del cliente"
-            [value]="cliente"
-            (input)="cliente = $any($event.target).value"
+            [(ngModel)]="cliente"
+            name="cliente"
           />
         </div>
 
@@ -50,8 +50,8 @@
             type="number"
             class="w-full border rounded-lg px-3 py-2"
             placeholder="Monto"
-            [value]="monto"
-            (input)="monto = $any($event.target).valueAsNumber"
+            [(ngModel)]="monto"
+            name="monto"
           />
         </div>
 
@@ -60,8 +60,8 @@
           <label class="block font-medium mb-1">Método de pago</label>
           <select
             class="w-full border rounded-lg px-3 py-2"
-            [value]="metodoSeleccionado"
-            (change)="metodoSeleccionado = $any($event.target).value"
+            [(ngModel)]="metodoSeleccionado"
+            name="metodo"
           >
             <option value="Efectivo">Efectivo</option>
             <option value="Tarjeta">Tarjeta</option>
@@ -71,12 +71,90 @@
 
       </div>
 
+
+      <!-- =========================== -->
+      <!-- CAMPOS TARJETA (DEBAJO DE LOS 3 CAMPOS) -->
+      <!-- =========================== -->
+      <div *ngIf="metodoSeleccionado === 'Tarjeta'" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
+        <div>
+          <label class="block font-medium mb-1">Tipo de tarjeta</label>
+          <select
+            class="w-full border rounded-lg px-3 py-2"
+            [(ngModel)]="tipoTarjeta"
+            name="tipoTarjeta"
+          >
+            <option value="">Seleccione</option>
+            <option value="Visa">Visa</option>
+            <option value="Mastercard">Mastercard</option>
+            <option value="Diners Club">Diners Club</option>
+            <option value="American Express">American Express</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium mb-1">Número de Tarjeta</label>
+          <input 
+            type="text"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="XXXX-XXXX-XXXX-XXXX"
+            [(ngModel)]="numTarjeta"
+            name="numTarjeta"
+          />
+        </div>
+
+        <div>
+          <label class="block font-medium mb-1">Código CVV</label>
+          <input 
+            type="number"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="CVV"
+            [(ngModel)]="cvv"
+            name="cvv"
+          />
+        </div>
+
+      </div>
+
+
+      <!-- =========================== -->
+      <!-- CAMPOS TRANSFERENCIA -->
+      <!-- =========================== -->
+      <div *ngIf="metodoSeleccionado === 'Transferencia'" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
+        <div>
+          <label class="block font-medium mb-1">Número de operación</label>
+          <input 
+            type="text"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="N° de operación"
+            [(ngModel)]="numOperacion"
+            name="numOperacion"
+          />
+        </div>
+
+        <div>
+          <label class="block font-medium mb-1">Banco</label>
+          <input 
+            type="text"
+            class="w-full border rounded-lg px-3 py-2"
+            placeholder="Nombre del banco"
+            [(ngModel)]="banco"
+            name="banco"
+          />
+        </div>
+
+      </div>
+
+
+      <!-- BOTÓN REGISTRAR (ABAJO DE TODO) -->
       <button 
         class="mt-4 bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition"
         (click)="registrarPago()"
       >
         Registrar Pago
       </button>
+
     </div>
 
     <!-- TABLA -->
@@ -101,7 +179,7 @@
               <td class="px-4 py-2 border">{{ pago.cliente }}</td>
               <td class="px-4 py-2 border">{{ pago.metodo }}</td>
               <td class="px-4 py-2 border">S/. {{ pago.monto }}</td>
-              <td class="px-4 py-2 border">{{ pago.fecha }}</td>
+              <td class="px-4 py-2 border">{{ formatearFecha(pago.fecha) }}</td>
             </tr>
 
             <tr *ngIf="listaPagos.length === 0">

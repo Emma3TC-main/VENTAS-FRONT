@@ -9,6 +9,15 @@ interface Pago {
   fecha: Date;
   estado: 'Completado' | 'Pendiente' | 'Anulado';
   metodo: 'Efectivo' | 'Tarjeta' | 'Transferencia';
+
+  // TARJETA
+  tipoTarjeta?: '' | 'Visa' | 'Mastercard' | 'Diners Club' | 'American Express';
+  numTarjeta?: string;
+  cvv?: string;
+
+  // TRANSFERENCIA
+  numOperacion?: string;
+  banco?: string;
 }
 
 @Component({
@@ -19,22 +28,56 @@ interface Pago {
 })
 export class PagosComponent {
 
-  // Campos del formulario
   cliente: string = '';
   monto: number | null = null;
   metodoSeleccionado: 'Efectivo' | 'Tarjeta' | 'Transferencia' = 'Efectivo';
-  filtro: string = '';
 
-  // Lista de pagos
+  // TARJETA
+  tipoTarjeta: '' | 'Visa' | 'Mastercard' | 'Diners Club' | 'American Express' = '';
+  numTarjeta: string = '';
+  cvv: string = '';
+
+  // TRANSFERENCIA
+  numOperacion: string = '';
+  banco: string = '';
+
+  filtro: string = '';
   listaPagos: Pago[] = [];
 
   private ultimoId = 0;
 
-  // ---------------- REGISTRAR PAGO ----------------
   registrarPago(): void {
     if (!this.cliente.trim() || this.monto === null || this.monto <= 0) {
       alert('Completa los campos correctamente');
       return;
+    }
+
+    // VALIDACIONES TARJETA
+    if (this.metodoSeleccionado === 'Tarjeta') {
+      if (!this.tipoTarjeta) {
+        alert('Selecciona el tipo de tarjeta');
+        return;
+      }
+      if (!this.numTarjeta.trim()) {
+        alert('Ingresa el número de tarjeta');
+        return;
+      }
+      if (!this.cvv.trim()) {
+        alert('Ingresa el CVV');
+        return;
+      }
+    }
+
+    // VALIDACIONES TRANSFERENCIA
+    if (this.metodoSeleccionado === 'Transferencia') {
+      if (!this.numOperacion.trim()) {
+        alert('Ingresa el número de operación');
+        return;
+      }
+      if (!this.banco.trim()) {
+        alert('Ingresa el banco');
+        return;
+      }
     }
 
     const nuevoPago: Pago = {
@@ -43,7 +86,16 @@ export class PagosComponent {
       monto: this.monto,
       fecha: new Date(),
       estado: 'Completado',
-      metodo: this.metodoSeleccionado
+      metodo: this.metodoSeleccionado,
+
+      // TARJETA
+      tipoTarjeta: this.metodoSeleccionado === 'Tarjeta' ? this.tipoTarjeta : '',
+      numTarjeta: this.metodoSeleccionado === 'Tarjeta' ? this.numTarjeta : '',
+      cvv: this.metodoSeleccionado === 'Tarjeta' ? this.cvv : '',
+
+      // TRANSFERENCIA
+      numOperacion: this.metodoSeleccionado === 'Transferencia' ? this.numOperacion : '',
+      banco: this.metodoSeleccionado === 'Transferencia' ? this.banco : '',
     };
 
     this.listaPagos.push(nuevoPago);
@@ -51,19 +103,18 @@ export class PagosComponent {
     this.resetFormulario();
   }
 
-  // ---------------- FILTRO ----------------
   get pagosFiltrados(): Pago[] {
     const txt = this.filtro.toLowerCase().trim();
 
     return txt
       ? this.listaPagos.filter(p =>
           p.cliente.toLowerCase().includes(txt) ||
-          p.metodo.toLowerCase().includes(txt)
+          p.metodo.toLowerCase().includes(txt) ||
+          (p.tipoTarjeta?.toLowerCase().includes(txt) ?? false)
         )
       : this.listaPagos;
   }
 
-  // ---------------- ESTADÍSTICAS ----------------
   totalPagos: number = 0;
   totalRecaudado: number = 0;
   metodoMasUsado: string = '';
@@ -87,25 +138,11 @@ export class PagosComponent {
       : '';
   }
 
-  get totalEfectivo(): number {
-    return this.listaPagos.filter(p => p.metodo === 'Efectivo').length;
-  }
-
-  get totalTarjeta(): number {
-    return this.listaPagos.filter(p => p.metodo === 'Tarjeta').length;
-  }
-
-  get totalTransferencia(): number {
-    return this.listaPagos.filter(p => p.metodo === 'Transferencia').length;
-  }
-
-  // ---------------- ELIMINAR ----------------
   eliminarPago(id: number): void {
     this.listaPagos = this.listaPagos.filter(p => p.id !== id);
     this.actualizarEstadisticas();
   }
 
-  // ---------------- UTILS ----------------
   formatearFecha(d: Date): string {
     return new Date(d).toLocaleDateString('es-PE', {
       day: '2-digit',
@@ -118,5 +155,14 @@ export class PagosComponent {
     this.cliente = '';
     this.monto = null;
     this.metodoSeleccionado = 'Efectivo';
+
+    // TARJETA
+    this.tipoTarjeta = '';
+    this.numTarjeta = '';
+    this.cvv = '';
+
+    // TRANSFERENCIA
+    this.numOperacion = '';
+    this.banco = '';
   }
 }
