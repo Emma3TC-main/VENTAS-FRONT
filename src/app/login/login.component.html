@@ -1,26 +1,67 @@
-<div class="container">
-  <h2>Iniciar Sesión</h2>
+<main class="min-h-screen bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 flex items-center justify-center px-4">
+  <div class="w-full max-w-md bg-white/80 backdrop-blur-md border border-sky-100 rounded-3xl shadow-lg p-8">
 
-  <form (ngSubmit)="login()">
+    <!-- ENCABEZADO -->
+    <div class="text-center mb-6">
+      <div class="flex justify-center mb-3">
+        <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-semibold">
+          iR
+        </div>
+      </div>
+      <h2 class="text-2xl font-semibold text-slate-900">Iniciar sesión</h2>
+      <p class="text-sm text-slate-600 mt-1">Accede a tu cuenta de iRentasPro</p>
+    </div>
 
-    <input 
-      type="email" 
-      placeholder="Correo" 
-      [(ngModel)]="email" 
-      name="email"
-      required>
+    <!-- FORMULARIO -->
+    <form (ngSubmit)="login()" class="space-y-4">
 
-    <input 
-      type="password" 
-      placeholder="Contraseña" 
-      [(ngModel)]="password" 
-      name="password"
-      required>
+      <!-- CORREO -->
+      <div>
+        <label class="text-sm font-medium text-slate-700">Correo electrónico</label>
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          class="mt-1 w-full px-4 py-2.5 rounded-xl border border-sky-200 bg-white/70 text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+          placeholder="correo@ejemplo.com"
+        />
+      </div>
 
-    <button type="submit">Ingresar</button>
+      <!-- CONTRASEÑA -->
+      <div>
+        <label class="text-sm font-medium text-slate-700">Contraseña</label>
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          class="mt-1 w-full px-4 py-2.5 rounded-xl border border-sky-200 bg-white/70 text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+          placeholder="••••••••"
+        />
+      </div>
 
-    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+      <!-- BOTÓN -->
+      <button
+        type="submit"
+        class="w-full py-2.5 mt-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-md transition"
+      >
+        Ingresar
+      </button>
 
-    <a routerLink="/registro">¿No tienes cuenta? Regístrate</a>
-  </form>
-</div>
+      <!-- MENSAJE DE ERROR -->
+      <p *ngIf="errorMsg" class="text-center text-sm text-red-600 font-medium">{{ errorMsg }}</p>
+
+      <!-- LINK -->
+      <p class="text-center text-sm text-slate-600 mt-3">
+        ¿No tienes cuenta?
+       <a 
+  routerLink="/registro"
+  class="text-blue-700 font-medium hover:underline">
+  Regístrate aquí
+</a>
+
+      </p>
+    </form>
+  </div>
+</main>

@@ -1,0 +1,172 @@
+<!-- HEADER PREMIUM -->
+<header class="w-full bg-white/80 backdrop-blur border-b border-sky-200/70">
+  <div class="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-semibold">
+        iR
+      </div>
+      <div class="flex flex-col leading-tight">
+        <span class="text-sm font-semibold text-slate-900">iRentasPro</span>
+        <span class="text-[11px] text-slate-500">Panel Premium</span>
+      </div>
+    </div>
+
+    <!-- Botón de logout -->
+    <button
+      (click)="logout()"
+      class="px-4 py-2 rounded-full bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition shadow-sm">
+      Cerrar sesión
+    </button>
+  </div>
+</header>
+
+<main class="min-h-screen bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 text-slate-900">
+
+  <div class="w-full max-w-[1400px] mx-auto px-6 py-10">
+
+    <!-- TITULO -->
+    <header class="mb-10">
+      <h1 class="text-3xl md:text-4xl font-semibold text-slate-900">
+        Bienvenido, <span class="text-blue-700">{{ usuarioNombre }}</span>
+      </h1>
+      <p class="text-slate-600 text-sm mt-2">
+        Tu panel de administración de propiedades · Plan Premium activo
+      </p>
+    </header>
+
+    <!-- CARDS RESUMEN -->
+    <section class="grid md:grid-cols-4 gap-6 mb-12">
+
+      <div class="p-6 rounded-3xl bg-white/80 border border-blue-100 shadow-sm">
+        <p class="text-xs text-slate-500">Propiedades registradas</p>
+        <p class="text-3xl font-semibold text-slate-900 mt-2">12</p>
+        <a routerLink="/propiedades" class="text-blue-700 text-xs font-medium hover:underline">
+          Ver propiedades →
+        </a>
+      </div>
+
+      <div class="p-6 rounded-3xl bg-white/80 border border-blue-100 shadow-sm">
+        <p class="text-xs text-slate-500">Contratos activos</p>
+        <p class="text-3xl font-semibold text-slate-900 mt-2">8</p>
+        <a routerLink="/contratos" class="text-blue-700 text-xs font-medium hover:underline">
+          Ver contratos →
+        </a>
+      </div>
+
+      <div class="p-6 rounded-3xl bg-white/80 border border-blue-100 shadow-sm">
+        <p class="text-xs text-slate-500">Pagos del mes</p>
+        <p class="text-3xl font-semibold text-slate-900 mt-2">S/ 4,250</p>
+        <a routerLink="/pagos" class="text-blue-700 text-xs font-medium hover:underline">
+          Ver pagos →
+        </a>
+      </div>
+
+      <div class="p-6 rounded-3xl bg-white/80 border border-blue-100 shadow-sm">
+        <p class="text-xs text-slate-500">Alertas de vencimiento</p>
+        <p class="text-3xl font-semibold text-red-600 mt-2">3</p>
+        <a routerLink="/reportes/dashboard" class="text-blue-700 text-xs font-medium hover:underline">
+          Revisar alertas →
+        </a>
+      </div>
+
+    </section>
+
+    <!-- ACCIONES RAPIDAS -->
+    <section class="mb-16">
+      <h2 class="text-xl font-semibold mb-4">Acciones rápidas</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <a routerLink="/registro-propiedad" class="p-6 bg-blue-600 text-white rounded-3xl shadow-md hover:bg-blue-700 transition text-center">
+          Registrar nueva propiedad
+        </a>
+
+        <a routerLink="/contratos" class="p-6 bg-white/85 border border-blue-100 rounded-3xl shadow hover:bg-white transition text-center">
+          Gestionar contratos
+        </a>
+
+        <a routerLink="/pagos" class="p-6 bg-white/85 border border-blue-100 rounded-3xl shadow hover:bg-white transition text-center">
+          Seguimiento de pagos
+        </a>
+
+      </div>
+    </section>
+    <!-- SECCIÓN: MÓDULOS DEL SISTEMA DE REPORTES -->
+<section class="mb-16">
+  <h2 class="text-xl font-semibold mb-4">Módulos de Reportes</h2>
+
+  <div class="grid md:grid-cols-3 gap-6">
+
+    <!-- Reporte General -->
+    <a routerLink="/reportes/dashboard"
+       class="p-6 rounded-3xl bg-white/80 border border-sky-100 shadow-sm hover:bg-white transition block">
+      <h3 class="text-lg font-semibold text-slate-900 mb-1">Reporte General</h3>
+      <p class="text-sm text-slate-600">Visión completa de ingresos, morosidad y rendimiento mensual.</p>
+    </a>
+
+    <!-- Notificaciones -->
+    <a routerLink="/reportes/notificaciones"
+       class="p-6 rounded-3xl bg-white/80 border border-sky-100 shadow-sm hover:bg-white transition block">
+      <h3 class="text-lg font-semibold text-slate-900 mb-1">Notificaciones</h3>
+      <p class="text-sm text-slate-600">Alertas de vencimiento, renovaciones y pagos pendientes.</p>
+    </a>
+
+    <!-- Financiero -->
+    <a routerLink="/reportes/financiero"
+       class="p-6 rounded-3xl bg-white/80 border border-sky-100 shadow-sm hover:bg-white transition block">
+      <h3 class="text-lg font-semibold text-slate-900 mb-1">Reporte Financiero</h3>
+      <p class="text-sm text-slate-600">Ingresos por propiedad, tendencia anual y flujo mensual.</p>
+    </a>
+
+    <!-- Inquilinos -->
+    <a routerLink="/reportes/inquilinos"
+       class="p-6 rounded-3xl bg-white/80 border border-sky-100 shadow-sm hover:bg-white transition block">
+      <h3 class="text-lg font-semibold text-slate-900 mb-1">Inquilinos</h3>
+      <p class="text-sm text-slate-600">Estados, pagos, historial mensual y desempeño general.</p>
+    </a>
+
+    <!-- Configuración -->
+    <a routerLink="/reportes/configuracion"
+       class="p-6 rounded-3xl bg-white/80 border border-sky-100 shadow-sm hover:bg-white transition block">
+      <h3 class="text-lg font-semibold text-slate-900 mb-1">Configuración</h3>
+      <p class="text-sm text-slate-600">Preferencias del sistema, visualización y alertas personalizadas.</p>
+    </a>
+
+  </div>
+</section>
+
+
+    <!-- ACCESO A REPORTES -->
+    <section class="mb-20">
+      <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-10 shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Reportes Inteligentes de Gestión</h3>
+        <p class="text-blue-100 text-sm mb-6">
+          Visualiza el comportamiento de tus inquilinos, flujos de ingresos, morosidad y vencimientos.
+        </p>
+
+        <a routerLink="/reportes/dashboard"
+           class="inline-block px-6 py-2.5 rounded-full bg-white text-blue-700 font-semibold hover:bg-blue-50 transition">
+          Ir al módulo de reportes
+        </a>
+      </div>
+    </section>
+
+  </div>
+</main>
+<!-- FOOTER -->
+<footer class="mt-20 bg-gradient-to-r from-sky-100 to-sky-200 border-t border-sky-200">
+  <div class="max-w-[1400px] mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between text-[12px] text-slate-600">
+    <p>© {{ year }} iRentasPro · Gestión profesional de alquileres en Perú.</p>
+
+    <div class="flex items-center gap-3 mt-2 md:mt-0">
+      <span>Síguenos</span>
+      <div class="flex gap-2">
+        <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">F</span>
+        <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">IG</span>
+        <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">YT</span>
+      </div>
+    </div>
+  </div>
+</footer>
+

@@ -1,0 +1,370 @@
+<main
+  class="min-h-screen bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 text-slate-900 flex flex-col"
+>
+  <!-- CONTENEDOR CENTRAL -->
+  <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-10 flex-1">
+
+    <!-- HEADER SIMPLE (YA DENTRO DE LA APP) -->
+    <header class="py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center text-xs font-semibold text-white shadow-sm"
+        >
+          iR
+        </div>
+        <div class="flex flex-col leading-tight">
+          <span class="text-base font-semibold text-slate-900">iRentasPro</span>
+          <span class="text-[11px] text-slate-500">Versión gratuita · Vista de propiedades</span>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center gap-6 text-xs font-medium text-slate-600">
+        <span class="px-3 py-1 rounded-full bg-white/70 border border-sky-100">
+          Plan actual: <span class="font-semibold text-blue-700">Free</span>
+        </span>
+        <button
+          type="button"
+          class="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition"
+        >
+          Mejorar a Premium
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO / BIENVENIDA FREE -->
+    <section class="pt-6 pb-14 lg:pt-8 lg:pb-18">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+        <!-- TEXTO HERO -->
+        <div class="max-w-2xl space-y-5">
+          <p
+            class="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[11px] font-medium text-blue-700"
+          >
+            Bienvenido a tu cuenta gratuita de iRentasPro
+          </p>
+
+          <h1 class="text-3xl md:text-4xl font-semibold leading-tight">
+            Explora propiedades en alquiler y descubre el potencial de
+            <span class="text-blue-700">iRentasPro Premium</span>.
+          </h1>
+
+          <p class="text-sm md:text-base text-slate-700">
+            Con la versión <span class="font-semibold">Free</span> podrás familiarizarte con la
+            plataforma y revisar las propiedades que publican nuestros clientes Premium.
+            Cuando estés listo para administrar tus propios inmuebles, podrás mejorar a
+            <span class="font-semibold">iRentasPro Premium</span>.
+          </p>
+
+          <!-- BOTONES PRINCIPALES -->
+          <div class="flex flex-wrap gap-4">
+            <button
+              type="button"
+              class="px-7 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-sm transition"
+            >
+              Propiedades (Próximamente)
+            </button>
+            <button
+              type="button"
+              class="px-7 py-3 rounded-full border border-blue-500 text-blue-700 hover:bg-blue-50 text-sm font-medium transition"
+            >
+              Suscribirse a Premium
+            </button>
+          </div>
+
+          <p class="text-[11px] text-slate-500">
+            *Por ahora estas opciones son demostrativas. Muy pronto podrás alquilar propiedades
+            y completar tu suscripción directamente desde la plataforma.
+          </p>
+        </div>
+
+        <!-- BLOQUE VISUAL SIMULADO -->
+        <div class="relative w-full max-w-lg mx-auto">
+          <div
+            class="absolute -inset-5 bg-gradient-to-tr from-blue-500/20 via-cyan-400/10 to-blue-700/20 blur-2xl rounded-3xl"
+          ></div>
+
+          <div
+            class="relative rounded-3xl bg-white/85 backdrop-blur shadow-lg border border-white/80 px-6 py-5 space-y-4"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-[11px] text-slate-500">Vista simulada</p>
+                <p class="text-sm font-semibold text-slate-800">
+                  iRentasPro Premium · Panel de arrendador
+                </p>
+              </div>
+              <div class="flex gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-xs">
+              <div class="rounded-2xl bg-blue-50 border border-blue-100 p-3.5 space-y-1">
+                <p class="font-semibold text-slate-800">Gestión completa de propiedades</p>
+                <p class="text-[11px] text-slate-600">
+                  Registra y administra cada inmueble con contratos, inquilinos y condiciones
+                  de alquiler.
+                </p>
+              </div>
+
+              <div class="rounded-2xl bg-sky-50 border border-sky-100 p-3.5 space-y-1">
+                <p class="font-semibold text-slate-800">Pagos, vencimientos y morosidad</p>
+                <p class="text-[11px] text-slate-600">
+                  Controla pagos al día, atrasos y montos pendientes en una sola vista.
+                </p>
+              </div>
+
+              <div class="rounded-2xl bg-blue-50 border border-blue-100 p-3.5 space-y-1">
+                <p class="font-semibold text-slate-800">Reportes financieros</p>
+                <p class="text-[11px] text-slate-600">
+                  Visualiza tus ingresos por alquiler, flujo mensual y proyección de cobranza.
+                </p>
+              </div>
+
+              <div class="rounded-2xl bg-sky-50 border border-sky-100 p-3.5 space-y-1">
+                <p class="font-semibold text-slate-800">Alertas y recordatorios</p>
+                <p class="text-[11px] text-slate-600">
+                  Recibe recordatorios sobre contratos, renovaciones y vencimientos de renta.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="rounded-2xl border border-dashed border-slate-200 px-4 py-2 flex items-center justify-between text-[11px]"
+            >
+              <span class="text-slate-600">
+                Estas funciones están reservadas para
+                <span class="font-semibold text-blue-700">iRentasPro Premium</span>.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: ¿QUÉ PUEDES HACER CON FREE? -->
+    <section class="py-10 lg:py-12 border-t border-sky-200/70">
+      <div class="max-w-3xl mx-auto text-center space-y-4">
+        <h2 class="text-2xl md:text-3xl font-semibold text-slate-900">
+          ¿Qué puedes hacer con tu cuenta gratuita?
+        </h2>
+        <p class="text-sm md:text-base text-slate-700">
+          La versión <span class="font-semibold">iRentasPro Free</span> es ideal para empezar:
+          explora cómo funciona la plataforma y conoce el flujo de alquileres antes de
+          administrar tus propios inmuebles.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-7 md:grid-cols-3">
+        <div class="bg-white/80 border border-sky-100 rounded-2xl p-6 shadow-sm">
+          <p class="text-sm font-semibold text-slate-800 mb-2">
+            Revisar propiedades en alquiler
+          </p>
+          <p class="text-xs text-slate-600">
+            Explora las propiedades que publican nuestros clientes Premium y entiende cómo
+            se presenta la información de cada inmueble.
+          </p>
+        </div>
+
+        <div class="bg-white/80 border border-sky-100 rounded-2xl p-6 shadow-sm">
+          <p class="text-sm font-semibold text-slate-800 mb-2">
+            Conocer el flujo de gestión
+          </p>
+          <p class="text-xs text-slate-600">
+            Familiarízate con los estados de alquiler, contratos y pagos para ver cómo se
+            gestionan los alquileres dentro de iRentasPro.
+          </p>
+        </div>
+
+        <div class="bg-white/80 border border-sky-100 rounded-2xl p-6 shadow-sm">
+          <p class="text-sm font-semibold text-slate-800 mb-2">
+            Prepararte para el siguiente paso
+          </p>
+          <p class="text-xs text-slate-600">
+            Usa esta versión para evaluar la plataforma y decidir cómo organizarás tus
+            propiedades cuando actives tu plan Premium.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEPARADOR -->
+    <section class="py-6">
+      <div class="max-w-xl mx-auto text-center space-y-2">
+        <p class="text-xs uppercase tracking-wide text-blue-700 font-semibold">
+          Da el siguiente paso
+        </p>
+        <p class="text-sm md:text-base text-slate-700">
+          Si eres propietario o administrador en Perú, la verdadera potencia está en
+          <span class="font-semibold">iRentasPro Premium</span>.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: FREE VS PREMIUM -->
+    <section class="py-8 lg:py-10">
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div class="text-center space-y-2">
+          <h2 class="text-2xl md:text-3xl font-semibold text-slate-900">
+            Free vs Premium: ¿qué incluye cada plan?
+          </h2>
+          <p class="text-sm md:text-base text-slate-700">
+            Empieza con tu cuenta gratuita y cuando estés listo, activa tu suscripción
+            para administrar todas tus propiedades de forma profesional.
+          </p>
+        </div>
+
+        <div class="overflow-hidden rounded-2xl bg-white/90 border border-sky-100 shadow-sm">
+          <table class="w-full text-xs md:text-sm">
+            <thead class="bg-sky-50">
+              <tr>
+                <th class="text-left px-4 py-3 text-slate-600 font-semibold">Funcionalidad</th>
+                <th class="px-4 py-3 text-blue-700 font-semibold">Free</th>
+                <th class="px-4 py-3 text-blue-700 font-semibold">Premium</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-slate-100">
+                <td class="px-4 py-3 text-slate-700">Ver propiedades en alquiler</td>
+                <td class="px-4 py-3 text-center">✔</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+              <tr class="border-t border-slate-100 bg-sky-50/40">
+                <td class="px-4 py-3 text-slate-700">Registrar y administrar tus propios inmuebles</td>
+                <td class="px-4 py-3 text-center text-slate-400">✖</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+              <tr class="border-t border-slate-100">
+                <td class="px-4 py-3 text-slate-700">Control de pagos, vencimientos y morosidad</td>
+                <td class="px-4 py-3 text-center text-slate-400">✖</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+              <tr class="border-t border-slate-100 bg-sky-50/40">
+                <td class="px-4 py-3 text-slate-700">Reportes financieros y flujo de ingresos</td>
+                <td class="px-4 py-3 text-center text-slate-400">✖</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+              <tr class="border-t border-slate-100">
+                <td class="px-4 py-3 text-slate-700">Alertas, recordatorios y renovaciones</td>
+                <td class="px-4 py-3 text-center text-slate-400">✖</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+              <tr class="border-t border-slate-100 bg-sky-50/40">
+                <td class="px-4 py-3 text-slate-700">Gestión documental del alquiler</td>
+                <td class="px-4 py-3 text-center text-slate-400">✖</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+              <tr class="border-t border-slate-100">
+                <td class="px-4 py-3 text-slate-700">Soporte y acompañamiento especializado</td>
+                <td class="px-4 py-3 text-center text-slate-400">✖</td>
+                <td class="px-4 py-3 text-center">✔</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-xs md:text-sm text-slate-600">
+            Con la versión Free puedes conocer la plataforma. Con Premium, la conviertes en tu
+            centro de control para todos tus alquileres.
+          </p>
+          <button
+            type="button"
+            class="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-sm transition"
+          >
+            Quiero mejorar a Premium
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: ENFOQUE EN PERÚ -->
+    <section class="py-10 lg:py-12">
+      <div class="grid gap-8 md:grid-cols-[1.3fr,1fr] md:items-center">
+        <div class="space-y-4">
+          <h2 class="text-2xl md:text-3xl font-semibold text-slate-900">
+            Pensado para propietarios y administradores en Perú
+          </h2>
+          <p class="text-sm md:text-base text-slate-700">
+            iRentasPro nace para responder a la realidad del mercado peruano de alquileres:
+            múltiples inmuebles, distintos inquilinos y la necesidad de tener todo bajo
+            control sin depender de hojas de cálculo aisladas.
+          </p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li>• Seguimiento claro de tus contratos de alquiler.</li>
+            <li>• Organización de pagos y vencimientos mes a mes.</li>
+            <li>• Información centralizada para ordenar tus finanzas.</li>
+            <li>• Una base sólida para el crecimiento de tu cartera de propiedades.</li>
+          </ul>
+        </div>
+
+        <div
+          class="rounded-3xl bg-white/85 border border-sky-100 shadow-sm p-5 space-y-3 text-sm"
+        >
+          <p class="font-semibold text-slate-800">
+            “La versión Free me ayudó a entender cómo funciona la plataforma. Cuando vi el
+            potencial del panel Premium, decidí migrar toda la gestión de mis propiedades
+            a iRentasPro.”
+          </p>
+          <p class="text-xs text-slate-600">
+            Usuario simulado · Administrador de propiedades en Lima
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="py-10">
+      <div
+        class="max-w-4xl mx-auto rounded-3xl bg-blue-600 text-white px-8 py-9 md:px-12 md:py-11 shadow-lg"
+      >
+        <div class="space-y-4 text-center md:text-left md:flex md:items-center md:justify-between md:space-y-0 md:gap-8">
+          <div class="space-y-2">
+            <h3 class="text-lg md:text-2xl font-semibold">
+              ¿Listo para dar el salto a iRentasPro Premium?
+            </h3>
+            <p class="text-sm text-blue-50">
+              Cuando quieras administrar tus propios inmuebles, activa tu plan Premium y
+              lleva el control total de tus alquileres desde una sola plataforma.
+            </p>
+          </div>
+          <div class="flex flex-col gap-3 md:items-end">
+            <button
+              type="button"
+              class="w-full md:w-auto px-6 py-2.5 rounded-full bg-white text-blue-700 text-sm font-semibold hover:bg-blue-50 transition"
+            >
+              Suscribirme a Premium
+            </button>
+            <button
+              type="button"
+              class="w-full md:w-auto px-6 py-2.5 rounded-full border border-blue-100 text-sm font-medium bg-blue-700/40 hover:bg-blue-700/60 transition"
+            >
+              Ver beneficios completos
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-sky-200/80 bg-gradient-to-r from-sky-100 to-sky-200">
+    <div
+      class="w-full max-w-[1400px] mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3"
+    >
+      <div class="text-[11px] text-slate-600">
+        © {{ year }} iRentasPro · Versión gratuita de la plataforma de gestión de alquileres en Perú.
+      </div>
+      <div class="flex items-center gap-3 text-[11px] text-slate-600">
+        <span>Síguenos</span>
+        <div class="flex gap-2">
+          <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">F</span>
+          <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">X</span>
+          <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">IG</span>
+          <span class="w-6 h-6 rounded-full bg-blue-600/90 text-white text-[10px] flex items-center justify-center">YT</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>

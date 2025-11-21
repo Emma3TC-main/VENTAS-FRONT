@@ -2,14 +2,14 @@
 import { Routes } from '@angular/router';
 
 // 🔹 COMPONENTES YA EXISTENTES
-import { Principal } from './principal/principal';
+import { Principal } from './inicio/principal';
 import { ListaPropiedadesComponent } from './propiedades/lista-propiedades/lista-propiedades.component';
 import { DetallePropiedadComponent } from './propiedades/detalle-propiedad/detalle-propiedad.component';
 import { RegistroPropiedadComponent } from './propiedades/registro-propiedad/registro-propiedad.component';
 import { ContratoComponent } from './propiedades/contrato/contrato.component';
 import { GestionDocumentosComponent } from './propiedades/gestion-documentos/gestion-documentos.component';
 import { ReportesComponent } from './reportes/dashboard/dashboard.component';
-import { ConfiguracionComponent } from './reportes/configuracion/configuracion.component'; 
+import { ConfiguracionComponent } from './reportes/configuracion/configuracion.component';
 import { FinancieroComponent } from './reportes/financiero/financiero.component';
 import { InquilinosComponent } from './reportes/inquilinos/inquilinos.component';
 
@@ -24,39 +24,54 @@ import { ContratosComponent } from './contratos/contratos.component';
 
 export const routes: Routes = [
 
-  // 🔹 Pantalla principal por defecto
+  // 🔹 Landing pública
   { path: '', component: Principal },
 
   // 🔹 Login y Registro
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
 
+  // 🔹 Landing interna FREE
+  {
+    path: 'inicio-free',
+    loadComponent: () =>
+      import('./inicio-free/inicio-free.component')
+        .then(m => m.InicioFreeComponent),
+  },
+
+  // 🔹 Dashboard Premium (CORRECTO)
+  {
+    path: 'dashboard-premium',
+    loadComponent: () =>
+      import('./dashboard-premium/dashboard-premium.component')
+        .then(m => m.DashboardPremiumComponent)
+  },
+
   // 🔹 Rutas existentes
   { path: 'propiedades', component: ListaPropiedadesComponent },
   { path: 'propiedades/:id', component: DetallePropiedadComponent },
-
   { path: 'registro-propiedad', component: RegistroPropiedadComponent },
 
-  { 
-    path: 'contrato/:id', 
-    component: ContratoComponent, 
-    title: 'Gestión de Contratos' 
+  {
+    path: 'contrato/:id',
+    component: ContratoComponent,
+    title: 'Gestión de Contratos'
   },
 
-  { 
-    path: 'documentos/:id', 
-    component: GestionDocumentosComponent, 
-    title: 'Gestión de Documentos' 
+  {
+    path: 'documentos/:id',
+    component: GestionDocumentosComponent,
+    title: 'Gestión de Documentos'
   },
 
-  // 🔹 NUEVAS RUTAS (AGREGADAS)
+  // 🔹 Nuevas Rutas de módulos frontend
   { path: 'asesorias', component: AsesoriasComponent },
   { path: 'pagos', component: PagosComponent },
   { path: 'contratos', component: ContratosComponent },
 
-  // 🔹 Rutas de Reportes
-  { 
-    path: 'reportes', 
+  // 🔹 Rutas de Reportes (Mantiene solo lo que corresponde)
+  {
+    path: 'reportes',
     component: ReportesComponent,
     title: 'Reportes y Gestión',
 
@@ -67,28 +82,28 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./reportes/dashboard/dashboard-content.component')
-          .then(m => m.DashboardContentComponent),
+            .then(m => m.DashboardContentComponent),
         title: 'Vista General'
       },
 
-      { 
-        path: 'notificaciones', 
+      {
+        path: 'notificaciones',
         loadComponent: () =>
           import('./reportes/notificaciones/notificaciones.component')
-          .then(m => m.NotificacionesComponent),
+            .then(m => m.NotificacionesComponent),
         title: 'Centro de Notificaciones'
       },
 
-      { 
-        path: 'configuracion', 
-        component: ConfiguracionComponent, 
+      {
+        path: 'configuracion',
+        component: ConfiguracionComponent,
         title: 'Configuración de Reportes'
       },
 
-      { 
-        path: 'financiero', 
-        component: FinancieroComponent, 
-        title: 'Reporte Financiero' 
+      {
+        path: 'financiero',
+        component: FinancieroComponent,
+        title: 'Reporte Financiero'
       },
 
       {

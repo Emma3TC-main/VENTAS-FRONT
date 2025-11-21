@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -23,14 +23,20 @@ export class LoginComponent {
   ) {}
 
   login(): void {
+    // limpiar error anterior
+    this.errorMsg = '';
+
+    // validación básica
+    if (!this.email || !this.password) {
+      this.errorMsg = 'Completa tu correo y contraseña';
+      return;
+    }
+
     const result = this.auth.login(this.email, this.password);
 
     if (result) {
-      // Cambia la navegación a una ruta REAL de tu proyecto
-      this.router.navigate(['/']);
-      // Ejemplos alternativos:
-      // this.router.navigate(['/propiedades']);
-      // this.router.navigate(['/reportes']);
+      // Usuario autenticado: lo llevamos al dashboard Premium
+      this.router.navigate(['/dashboard-premium']);
     } else {
       this.errorMsg = 'Correo o contraseña incorrectos';
     }

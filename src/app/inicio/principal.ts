@@ -11,5 +11,5 @@ import { RouterLink } from '@angular/router';
   
 })
 export class Principal {
-
+year = new Date().getFullYear();
 }

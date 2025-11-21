@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 
 // ARREGLO 1: Importamos la clase "Principal"
-import { Principal } from './principal/principal'; 
+import { Principal } from './inicio/principal'; 
 
 @Component({
   selector: 'app-root',
