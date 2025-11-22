@@ -1,7 +1,5 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-
-// 🔹 COMPONENTES YA EXISTENTES
 import { Principal } from './inicio/principal';
 import { ListaPropiedadesComponent } from './propiedades/lista-propiedades/lista-propiedades.component';
 import { DetallePropiedadComponent } from './propiedades/detalle-propiedad/detalle-propiedad.component';
@@ -12,26 +10,22 @@ import { ReportesComponent } from './reportes/dashboard/dashboard.component';
 import { ConfiguracionComponent } from './reportes/configuracion/configuracion.component';
 import { FinancieroComponent } from './reportes/financiero/financiero.component';
 import { InquilinosComponent } from './reportes/inquilinos/inquilinos.component';
-
-// 🔹 LOGIN + REGISTRO
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
-
-// 🔹 NUEVOS COMPONENTES (solo frontend)
 import { AsesoriasComponent } from './asesorias/asesorias.component';
 import { PagosComponent } from './pagos/pagos.component';
 import { ContratosComponent } from './contratos/contratos.component';
+import { PropiedadesVistaUsuarioComponent } from './inicio-free/propiedades-vista-usuario/propiedades-vista-usuario.component'; 
+import { DetallePropiedadVistaUsuarioComponent } from './propiedades/detalle-propiedad-usuario/detalle-propiedad-usuario.component';
+
 
 export const routes: Routes = [
 
-  // 🔹 Landing pública
   { path: '', component: Principal },
 
-  // 🔹 Login y Registro
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
 
-  // 🔹 Landing interna FREE
   {
     path: 'inicio-free',
     loadComponent: () =>
@@ -39,7 +33,6 @@ export const routes: Routes = [
         .then(m => m.InicioFreeComponent),
   },
 
-  // 🔹 Dashboard Premium (CORRECTO)
   {
     path: 'dashboard-premium',
     loadComponent: () =>
@@ -47,9 +40,21 @@ export const routes: Routes = [
         .then(m => m.DashboardPremiumComponent)
   },
 
-  // 🔹 Rutas existentes
+  { 
+    path: 'propiedades-vista-usuario', 
+    component: PropiedadesVistaUsuarioComponent, 
+    title: 'Explora Propiedades' 
+  },
+  
+  { 
+    path: 'propiedad/:id', 
+    component: DetallePropiedadVistaUsuarioComponent, 
+    title: 'Detalle Propiedad' 
+  },
+
   { path: 'propiedades', component: ListaPropiedadesComponent },
-  { path: 'propiedades/:id', component: DetallePropiedadComponent },
+  { path: 'propiedades/:id', component: DetallePropiedadComponent }, // Detalle del Admin
+
   { path: 'registro-propiedad', component: RegistroPropiedadComponent },
 
   {
@@ -64,12 +69,10 @@ export const routes: Routes = [
     title: 'Gestión de Documentos'
   },
 
-  // 🔹 Nuevas Rutas de módulos frontend
   { path: 'asesorias', component: AsesoriasComponent },
   { path: 'pagos', component: PagosComponent },
   { path: 'contratos', component: ContratosComponent },
 
-  // 🔹 Rutas de Reportes (Mantiene solo lo que corresponde)
   {
     path: 'reportes',
     component: ReportesComponent,
@@ -114,6 +117,5 @@ export const routes: Routes = [
     ]
   },
 
-  // 🔹 Error 404
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

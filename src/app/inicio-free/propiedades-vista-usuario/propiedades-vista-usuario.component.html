@@ -1,0 +1,78 @@
+<!-- src/app/inicio-free/propiedades-vista-usuario/propiedades-vista-usuario.component.html -->
+<div class="min-h-screen bg-sky-50 pt-8 pb-16">
+    <div class="container mx-auto px-4 max-w-7xl">
+
+        <h1 class="text-4xl font-extrabold text-blue-700 mb-10 text-center">
+            Explora Nuestras Propiedades Disponibles
+        </h1>
+
+        <div class="bg-white p-6 rounded-xl shadow-lg mb-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <input type="text" placeholder="Buscar por dirección o título..."
+                class="flex-grow border border-gray-300 rounded-md p-3 focus:ring-blue-500 focus:border-blue-500" />
+            
+            <select class="border border-gray-300 rounded-md p-3 focus:ring-blue-500 focus:border-blue-500">
+                <option value="" disabled selected>Tipo de Operación</option>
+                <option>En Venta</option>
+                <option>En Alquiler</option>
+            </select>
+            
+            <select class="border border-gray-300 rounded-md p-3 focus:ring-blue-500 focus:border-blue-500">
+                <option value="" disabled selected>Ordenar por Precio</option>
+                <option>Mayor a menor</option>
+                <option>Menor a mayor</option>
+            </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div *ngFor="let propiedad of propiedades" 
+                class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-blue-400/50 transition duration-300 transform hover:scale-[1.02]">
+                
+                <div class="h-48 overflow-hidden">
+                    <img 
+                        [src]="propiedad.imagenUrl[0]" 
+                        [alt]="propiedad.nombre" 
+                        class="w-full h-full object-cover"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/374151/ffffff?text=' + this.alt.replace(' ', '+')"
+                    />
+                </div>
+
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-blue-700 mb-2 truncate">
+                        {{ propiedad.nombre }}
+                    </h2>
+                    <p class="text-gray-500 mb-4 truncate">
+                        {{ propiedad.direccion }}
+                    </p>
+                    
+                    <div class="flex justify-between items-center mb-4 border-b pb-4">
+                        <p class="text-xl font-extrabold text-green-600">
+                            {{ propiedad.rentaMes | currency: 'USD' }} 
+                            <span class="text-sm font-normal text-gray-400">/ mes (o venta)</span>
+                        </p>
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full"
+                            [ngClass]="{
+                                'bg-green-100 text-green-800': propiedad.estado === 'Alquiler' || propiedad.estado === 'Venta',
+                                'bg-yellow-100 text-yellow-800': propiedad.estado === 'Ocupada',
+                                'bg-red-100 text-red-800': propiedad.estado === 'Mantenimiento'
+                            }">
+                            {{ propiedad.estado }}
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col space-y-3">
+                        <a [routerLink]="['/propiedad', propiedad.id]"
+                            class="w-full text-center bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-150">
+                            Ver Detalle
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="propiedades.length === 0" class="col-span-full text-center py-10 text-gray-500 text-lg">
+                No se encontraron propiedades disponibles para el público.
+            </div>
+
+        </div>
+    </div>
+</div>
