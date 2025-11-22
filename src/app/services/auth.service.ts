@@ -1,84 +1,66 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-export interface Usuario {
+export interface UsuarioDTO {
+  id: string;
   nombre: string;
   email: string;
-  password: string;
+  tipoCuenta: string | null;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  private base = environment.apiBaseUrl;
+  private tokenKey = 'irentaspro_token';
+  private meKey = 'irentaspro_user';
 
-  private usuariosKey = 'usuarios';
-  private usuarioActualKey = 'usuarioActual';
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
+  login(email: string, password: string): Observable<string> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new HttpParams().set('email', email).set('password', password);
 
-  /** LOGIN */
-  login(email: string, password: string): boolean {
-    const lista = this.getUsuarios();
+    return this.http
+      .post(`${this.base}/api/auth/login`, body.toString(), { headers, responseType: 'text' })
+      .pipe(
+        map(token => { this.setToken(token); return token; }),
+        catchError(this.handleError)
+      );
+  }
 
-    const encontrado = lista.find(
-      (u: Usuario) => u.email === email && u.password === password
+  registrar(nombre: string, email: string, password: string): Observable<UsuarioDTO> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new HttpParams().set('nombre', nombre).set('email', email).set('password', password);
+
+    return this.http
+      .post<UsuarioDTO>(`${this.base}/api/auth/register`, body.toString(), { headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  me(): Observable<UsuarioDTO> {
+    return this.http.get<UsuarioDTO>(`${this.base}/api/auth/me`).pipe(
+      map(u => { localStorage.setItem(this.meKey, JSON.stringify(u)); return u; }),
+      catchError(this.handleError)
     );
-
-    if (encontrado) {
-      // Guardamos el usuario actual en localStorage para simular sesión
-      localStorage.setItem(this.usuarioActualKey, JSON.stringify(encontrado));
-      return true;
-    }
-
-    return false;
   }
 
-  /** REGISTRAR USUARIO */
-  registrar(nombre: string, email: string, password: string): void {
-    const lista = this.getUsuarios();
-
-    const nuevo: Usuario = { nombre, email, password };
-    lista.push(nuevo);
-
-    localStorage.setItem(this.usuariosKey, JSON.stringify(lista));
+  // helpers
+  setToken(token: string) { localStorage.setItem(this.tokenKey, token); }
+  getToken() { return localStorage.getItem(this.tokenKey); }
+  logout() { localStorage.removeItem(this.tokenKey); localStorage.removeItem(this.meKey); }
+  isLoggedIn() { return !!this.getToken(); }
+  getUsuarioActualCache(): UsuarioDTO | null {
+    const raw = localStorage.getItem(this.meKey);
+    return raw ? JSON.parse(raw) as UsuarioDTO : null;
   }
 
-  /** VERIFICA SI YA EXISTE EL USUARIO POR EMAIL */
-  existeUsuario(email: string): boolean {
-    const lista = this.getUsuarios();
-    return lista.some((u: Usuario) => u.email === email);
-  }
-
-  /** OBTIENE TODOS LOS USUARIOS REGISTRADOS (SIMULADO) */
-  getUsuarios(): Usuario[] {
-    return JSON.parse(localStorage.getItem(this.usuariosKey) || '[]') as Usuario[];
-  }
-
-  /** OBTIENE EL USUARIO ACTUALMENTE LOGUEADO (SI HAY) */
-  getUsuarioActual(): Usuario | null {
-    const data = localStorage.getItem(this.usuarioActualKey);
-    if (!data) return null;
-
-    try {
-      return JSON.parse(data) as Usuario;
-    } catch {
-      return null;
-    }
-  }
-
-  /** ¿HAY ALGUIEN LOGUEADO? */
-  isLoggedIn(): boolean {
-    return this.getUsuarioActual() !== null;
-  }
-
-  /** CERRAR SESIÓN */
-  logout(): void {
-    localStorage.removeItem(this.usuarioActualKey);
-  }
-
-  /** LIMPIAR TODO (POR SI QUIERES PROBAR DESDE CERO) */
-  clearAll(): void {
-    localStorage.removeItem(this.usuariosKey);
-    localStorage.removeItem(this.usuarioActualKey);
+  private handleError(err: HttpErrorResponse) {
+    let msg = 'Error de comunicación. Inténtalo de nuevo.';
+    if (err.status === 0) msg = 'No se pudo conectar con el servidor.';
+    else if (err.error?.message) msg = err.error.message;
+    else if (typeof err.error === 'string') msg = err.error;
+    return throwError(() => new Error(msg));
   }
 }

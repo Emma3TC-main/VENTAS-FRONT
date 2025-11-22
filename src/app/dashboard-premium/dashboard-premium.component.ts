@@ -19,7 +19,7 @@ export class DashboardPremiumComponent {
     private auth: AuthService,
     private router: Router
   ) {
-    const user = this.auth.getUsuarioActual();
+    const user = this.auth.getUsuarioActualCache();
     this.usuarioNombre = user ? user.nombre : 'Usuario Premium';
   }
 

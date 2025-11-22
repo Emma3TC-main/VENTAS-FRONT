@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService, UsuarioDTO } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,33 +12,33 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  email = '';
+  password = '';
+  errorMsg = '';
+  loading = false;
 
-  email: string = '';
-  password: string = '';
-  errorMsg: string = '';
-
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   login(): void {
-    // limpiar error anterior
     this.errorMsg = '';
-
-    // validación básica
     if (!this.email || !this.password) {
       this.errorMsg = 'Completa tu correo y contraseña';
       return;
     }
+    this.loading = true;
 
-    const result = this.auth.login(this.email, this.password);
-
-    if (result) {
-      // Usuario autenticado: lo llevamos al dashboard Premium
-      this.router.navigate(['/dashboard-premium']);
-    } else {
-      this.errorMsg = 'Correo o contraseña incorrectos';
-    }
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => {
+        this.auth.me().subscribe({
+          next: (user: UsuarioDTO) => {
+            this.loading = false;
+            const plan = (user?.tipoCuenta || 'FREE').toUpperCase();
+            this.router.navigate([plan === 'PREMIUM' ? '/dashboard-premium' : '/inicio-free']);
+          },
+          error: e => { this.loading = false; this.errorMsg = e.message || 'No se pudo obtener el usuario actual'; }
+        });
+      },
+      error: e => { this.loading = false; this.errorMsg = e.message || 'Correo o contraseña incorrectos'; }
+    });
   }
 }

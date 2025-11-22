@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -12,43 +12,25 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
+  nombre = '';
+  email = '';
+  password = '';
+  errorMsg = '';
+  successMsg = '';
+  loading = false;
 
-  nombre: string = '';
-  email: string = '';
-  password: string = '';
-  errorMsg: string = '';
-  successMsg: string = '';
-
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   registrar(): void {
-
-    // VALIDACIÓN BÁSICA
+    this.errorMsg = ''; this.successMsg = '';
     if (!this.nombre || !this.email || !this.password) {
-      this.errorMsg = "Todos los campos son obligatorios";
-      this.successMsg = '';
-      return;
+      this.errorMsg = 'Todos los campos son obligatorios'; return;
     }
+    this.loading = true;
 
-    // VALIDAR SI YA EXISTE
-    if (this.auth.existeUsuario(this.email)) {
-      this.errorMsg = "Este correo ya está registrado";
-      this.successMsg = '';
-      return;
-    }
-
-    // REGISTRO
-    this.auth.registrar(this.nombre, this.email, this.password);
-
-    this.errorMsg = '';
-    this.successMsg = "Registro exitoso ✔";
-
-    // REDIRECCIÓN AUTOMÁTICA AL LOGIN
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 1200);
+    this.auth.registrar(this.nombre, this.email, this.password).subscribe({
+      next: () => { this.loading = false; this.successMsg = 'Registro exitoso ✔'; setTimeout(() => this.router.navigate(['/login']), 1200); },
+      error: e => { this.loading = false; this.errorMsg = e.message || 'No se pudo completar el registro'; }
+    });
   }
 }
