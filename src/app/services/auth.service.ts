@@ -1,3 +1,4 @@
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -12,7 +13,10 @@ export interface UsuarioDTO {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private base = environment.apiBaseUrl;
+  // ✅ environment.apiBaseUrl = 'http://localhost:8080/api'
+  // Evitamos duplicar /api construyendo una base específica para auth:
+  private authBase = `${environment.apiBaseUrl}/auth`;
+
   private tokenKey = 'irentaspro_token';
   private meKey = 'irentaspro_user';
 
@@ -22,8 +26,9 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
     const body = new HttpParams().set('email', email).set('password', password);
 
+    // ✅ URL final: http://localhost:8080/api/auth/login
     return this.http
-      .post(`${this.base}/api/auth/login`, body.toString(), { headers, responseType: 'text' })
+      .post(`${this.authBase}/login`, body.toString(), { headers, responseType: 'text' })
       .pipe(
         map(token => { this.setToken(token); return token; }),
         catchError(this.handleError)
@@ -34,13 +39,16 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
     const body = new HttpParams().set('nombre', nombre).set('email', email).set('password', password);
 
+    // ✅ URL final: http://localhost:8080/api/auth/register
     return this.http
-      .post<UsuarioDTO>(`${this.base}/api/auth/register`, body.toString(), { headers })
+      .post<UsuarioDTO>(`${this.authBase}/register`, body.toString(), { headers })
       .pipe(catchError(this.handleError));
   }
 
   me(): Observable<UsuarioDTO> {
-    return this.http.get<UsuarioDTO>(`${this.base}/api/auth/me`).pipe(
+    // ✅ URL final: http://localhost:8080/api/auth/me
+    // (Asumiendo que el JWT va por interceptor; si no, añade Authorization aquí)
+    return this.http.get<UsuarioDTO>(`${this.authBase}/me`).pipe(
       map(u => { localStorage.setItem(this.meKey, JSON.stringify(u)); return u; }),
       catchError(this.handleError)
     );
@@ -59,6 +67,7 @@ export class AuthService {
   private handleError(err: HttpErrorResponse) {
     let msg = 'Error de comunicación. Inténtalo de nuevo.';
     if (err.status === 0) msg = 'No se pudo conectar con el servidor.';
+    else if ((err as any)?.status === 403) msg = 'Acceso denegado o credenciales inválidas.';
     else if (err.error?.message) msg = err.error.message;
     else if (typeof err.error === 'string') msg = err.error;
     return throwError(() => new Error(msg));
