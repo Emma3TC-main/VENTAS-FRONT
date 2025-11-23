@@ -1,4 +1,3 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
 import { Principal } from './inicio/principal';
@@ -21,6 +20,8 @@ import { ContratosComponent } from './contratos/contratos.component';
 
 import { PropiedadesVistaUsuarioComponent } from './inicio-free/propiedades-vista-usuario/propiedades-vista-usuario.component';
 import { DetallePropiedadVistaUsuarioComponent } from './propiedades/detalle-propiedad-usuario/detalle-propiedad-usuario.component';
+// NOTA: Asegúrate que la ruta de importación de este componente sea correcta.
+import { EditarPropiedadComponent } from './propiedades/editar-propiedades/editar-propiedades.component'; 
 
 export const routes: Routes = [
   { path: '', component: Principal },
@@ -49,14 +50,21 @@ export const routes: Routes = [
   // --- PROPIEDADES (ADMIN) ---
   { path: 'propiedades', component: ListaPropiedadesComponent },
 
-  // 👇 ESTA RUTA VA ANTES DE LA PARAMETRIZADA
-  { path: 'propiedades/crear', component: RegistroPropiedadComponent },
+  // 1. CREAR (Ruta específica, va antes de la parametrizada)
+  { path: 'propiedades/crear', component: RegistroPropiedadComponent, title: 'Registrar Propiedad' },
+
+  // 2. EDICIÓN (Ruta específica con parámetro, DEBE ir antes del Detalle)
+  { 
+    path: 'propiedades/editar/:id', 
+    component: EditarPropiedadComponent, 
+    title: 'Editar Propiedad' 
+  },
 
   // Alias opcional por si tu UI aún navega a /registro-propiedad
   { path: 'registro-propiedad', redirectTo: 'propiedades/crear', pathMatch: 'full' },
 
-  // Detalle (DEBE IR DESPUÉS)
-  { path: 'propiedades/:id', component: DetallePropiedadComponent },
+  // 3. Detalle (Ruta genérica con parámetro, DEBE IR DESPUÉS de las específicas)
+  { path: 'propiedades/:id', component: DetallePropiedadComponent, title: 'Detalle Propiedad (Admin)' },
 
   // Contratos / Documentos (admin)
   { path: 'contrato/:id', component: ContratoComponent, title: 'Gestión de Contratos' },

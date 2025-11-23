@@ -1,30 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { PropiedadesService, PropiedadResponse } from '../../services/propiedades.service';
+import { Router } from '@angular/router';
+import { PropiedadesService, PropiedadResponse } from '../../../app/services/propiedades.service';
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-lista-propiedades',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './lista-propiedades.component.html',
-  styleUrls: ['./lista-propiedades.component.css']
+  styleUrls: ['./lista-propiedades.component.css'],
+  standalone: true, 
+  imports: [CommonModule] 
 })
 export class ListaPropiedadesComponent implements OnInit {
-  loading = true;
-  error = '';
   propiedades: PropiedadResponse[] = [];
+  cargando = true;
 
-  constructor(private svc: PropiedadesService) {}
+  constructor(
+    private propiedadesService: PropiedadesService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    // Si quieres solo las del usuario usa: this.svc.misPropiedades()
-    this.svc.listarTodas().subscribe({
-      next: data => { this.propiedades = data ?? []; this.loading = false; },
-      error: err => {
-        this.error = (err?.message || 'No se pudo cargar la lista de propiedades.');
-        this.loading = false;
+    this.cargarPropiedades();
+  }
+
+  cargarPropiedades(): void {
+    this.propiedadesService.listarTodas().subscribe({
+      next: (data) => {
+        this.propiedades = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar propiedades:', err);
+        this.cargando = false;
       }
     });
+  }
+  
+  editarPropiedad(id: string): void {
+     this.router.navigate(['/propiedades/editar', id]); 
   }
 }

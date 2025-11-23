@@ -2,20 +2,22 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs'; 
 
 export interface CrearPropiedadRequest {
   titulo: string;
   descripcion: string;
-  calle: string;
-  distrito: string;
+  calle: string; 
+  distrito: string; 
   provincia: string;
   latitud: number;
   longitud: number;
   precio: number;
-  moneda: string; // 'PEN', 'USD', etc.
+  moneda: string;
 }
+
 export interface PropiedadResponse {
-  id: string;
+  id: string; 
   ownerId: string;
   titulo: string;
   descripcion: string;
@@ -31,21 +33,25 @@ export interface PropiedadResponse {
 @Injectable({ providedIn: 'root' })
 export class PropiedadesService {
   private http = inject(HttpClient);
-  private base = `${environment.apiBaseUrl}/propiedades`;
+  private base = `${environment.apiBaseUrl}/v1/propiedades`; 
 
-  listarTodas() {
+  listarTodas(): Observable<PropiedadResponse[]> {
     return this.http.get<PropiedadResponse[]>(this.base);
   }
 
-  obtenerPorId(id: string) {
+  obtenerPorId(id: string): Observable<PropiedadResponse> {
     return this.http.get<PropiedadResponse>(`${this.base}/${id}`);
   }
 
-  crear(body: CrearPropiedadRequest) {
-    return this.http.post<PropiedadResponse>(this.base, body); // JWT va por interceptor
+  crear(body: CrearPropiedadRequest): Observable<PropiedadResponse> {
+    return this.http.post<PropiedadResponse>(this.base, body); 
   }
 
-  misPropiedades() {
-    return this.http.get<PropiedadResponse[]>(`${this.base}/mias`);
+  misPropiedades(): Observable<PropiedadResponse[]> {
+    return this.http.get<PropiedadResponse[]>(`${this.base}/owner/mias`); 
+  }
+
+  actualizar(id: string, body: CrearPropiedadRequest): Observable<PropiedadResponse> {
+    return this.http.put<PropiedadResponse>(`${this.base}/${id}`, body);
   }
 }

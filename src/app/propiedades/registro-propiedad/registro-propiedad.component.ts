@@ -111,3 +111,4 @@ export class RegistroPropiedadComponent implements OnInit {
     });
   }
 }
+
