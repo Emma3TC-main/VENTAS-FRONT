@@ -1,0 +1,22 @@
+<div class="container mt-5 text-center">
+  <h2>Procesando pago Premium...</h2>
+
+  <div *ngIf="cargando" class="mt-4">
+    <div class="spinner-border" role="status"></div>
+  </div>
+
+  <div *ngIf="!cargando">
+    <h3 [class.text-success]="!error" [class.text-danger]="error">
+      {{ mensaje }}
+    </h3>
+
+    <button class="btn btn-primary mt-4" (click)="irDashboard()" *ngIf="!error">
+      Ir al Dashboard Premium
+    </button>
+
+
+    <button class="btn btn-secondary mt-4" routerLink="/">
+      Volver al inicio
+    </button>
+  </div>
+</div>
