@@ -1,111 +1,132 @@
-<div class="container mx-auto p-4 max-w-4xl">
-  <h2 class="text-3xl font-bold mb-6 text-indigo-700 border-b pb-2">✏️ Editar Propiedad (ID: {{ propiedadId }})</h2>
+<div class="container mx-auto p-4 max-w-4xl min-h-screen flex flex-col items-center">
+    <div class="w-full bg-white p-8 rounded-xl shadow-2xl mt-10">
+        <h2 class="text-4xl font-extrabold mb-8 text-center text-gray-800">
+            <i class="fas fa-edit text-indigo-500 mr-3"></i> Editar Propiedad
+        </h2>
+        <p class="text-center text-sm text-gray-500 mb-6">ID de Propiedad: <span class="font-mono text-gray-700">{{ propiedadId }}</span></p>
 
-  <div *ngIf="cargandoDatos" class="flex items-center justify-center p-8 bg-blue-100 rounded-lg shadow">
-    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
-    Cargando datos de la propiedad...
-  </div>
+        <div *ngIf="cargandoDatos && !guardadoExitoso" class="text-center p-4 mb-6 bg-indigo-100 rounded-lg shadow-inner flex items-center justify-center">
+            <svg class="animate-spin h-5 w-5 text-indigo-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-indigo-700 font-medium">{{ cargandoDatos ? 'Guardando cambios...' : 'Cargando datos de la propiedad...' }}</span>
+        </div>
 
-  <form *ngIf="!cargandoDatos" [formGroup]="propiedadForm" (ngSubmit)="onSubmit()" class="bg-white p-6 rounded-lg shadow-xl">
-    
-    <!-- Sección de Información General -->
-    <fieldset class="mb-6 p-4 border border-gray-200 rounded-lg">
-      <legend class="text-xl font-semibold text-gray-700 px-2">Detalles Generales</legend>
+        <div *ngIf="guardadoExitoso" class="p-4 mb-6 text-lg font-semibold text-green-800 rounded-xl bg-green-100 shadow-lg border border-green-300 transition duration-500 ease-in-out transform scale-100">
+            ✅ ¡Cambios Guardados Exitosamente!
+        </div>
       
-      <div class="mb-4">
-        <label for="titulo" class="block text-sm font-medium text-gray-700">Título</label>
-        <input id="titulo" type="text" formControlName="titulo" required
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-        <div *ngIf="propiedadForm.get('titulo')?.invalid && (propiedadForm.get('titulo')?.dirty || propiedadForm.get('titulo')?.touched)" class="text-red-500 text-xs mt-1">
-          El título es obligatorio.
-        </div>
-      </div>
+        <form *ngIf="!cargandoDatos || guardadoExitoso" [formGroup]="propiedadForm" (ngSubmit)="onSubmit()">
+            
+            <fieldset class="mb-8 p-6 border-2 border-gray-200 rounded-xl shadow-inner bg-gray-50">
+                <legend class="text-xl font-bold text-gray-700 px-3 -ml-2 mb-4">Información Principal</legend>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    
+                    <div>
+                        <label for="titulo" class="block text-sm font-medium text-gray-700 mb-1">Título de la Propiedad <span class="text-red-500">*</span></label>
+                        <input id="titulo" type="text" formControlName="titulo" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        <div *ngIf="propiedadForm.get('titulo')?.invalid && (propiedadForm.get('titulo')?.dirty || propiedadForm.get('titulo')?.touched)" class="text-red-500 text-xs mt-1">
+                            Poner titulo actualizado
+                        </div>
+                    </div>
 
-      <div class="mb-4">
-        <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-        <textarea id="descripcion" formControlName="descripcion" rows="4"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-      </div>
-    </fieldset>
+                    <div>
+                        <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                        <textarea id="descripcion" formControlName="descripcion" rows="4"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="imagen" class="block text-sm font-medium text-gray-700 mb-1">URL de la Imagen <span class="text-red-500">*</span></label>
+                        <input id="imagen" type="url" formControlName="imagen" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        <div *ngIf="propiedadForm.get('imagen')?.value" class="mt-4 p-2 border border-gray-200 rounded-lg bg-white shadow-md">
+                            <p class="text-xs text-gray-500 mb-2 font-semibold">Previsualización de Imagen:</p>
+                            <img [src]="propiedadForm.get('imagen')?.value" alt="Preview" class="h-40 w-full object-cover rounded-lg">
+                        </div>
+                         <div *ngIf="propiedadForm.get('imagen')?.invalid && (propiedadForm.get('imagen')?.dirty || propiedadForm.get('imagen')?.touched)" class="text-red-500 text-xs mt-1">
+                            Imagen Obligatoria
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
 
-    <!-- Sección de Ubicación -->
-    <fieldset class="mb-6 p-4 border border-gray-200 rounded-lg">
-      <legend class="text-xl font-semibold text-gray-700 px-2">Ubicación</legend>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <div>
-          <label for="distrito" class="block text-sm font-medium text-gray-700">Distrito</label>
-          <input id="distrito" type="text" formControlName="distrito" required
-                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-        <div>
-          <label for="provincia" class="block text-sm font-medium text-gray-700">Provincia</label>
-          <input id="provincia" type="text" formControlName="provincia" required
-                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-        <div>
-          <label for="calle" class="block text-sm font-medium text-gray-700">Calle / Dirección</label>
-          <input id="calle" type="text" formControlName="calle" required
-                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-      </div>
+            <fieldset class="mb-8 p-6 border-2 border-gray-200 rounded-xl shadow-inner bg-gray-50">
+                <legend class="text-xl font-bold text-gray-700 px-3 -ml-2 mb-4">Detalles de Ubicación</legend>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <label for="distrito" class="block text-sm font-medium text-gray-700 mb-1">Distrito <span class="text-red-500">*</span></label>
+                        <input id="distrito" type="text" formControlName="distrito" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                    <div>
+                        <label for="provincia" class="block text-sm font-medium text-gray-700 mb-1">Provincia <span class="text-red-500">*</span></label>
+                        <input id="provincia" type="text" formControlName="provincia" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                    <div>
+                        <label for="calle" class="block text-sm font-medium text-gray-700 mb-1">Calle / Dirección <span class="text-red-500">*</span></label>
+                        <input id="calle" type="text" formControlName="calle" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="latitud" class="block text-sm font-medium text-gray-700">Latitud</label>
-          <input id="latitud" type="number" formControlName="latitud" required
-                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-        <div>
-          <label for="longitud" class="block text-sm font-medium text-gray-700">Longitud</label>
-          <input id="longitud" type="number" formControlName="longitud" required
-                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-      </div>
-    </fieldset>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="latitud" class="block text-sm font-medium text-gray-700 mb-1">Latitud <span class="text-red-500">*</span></label>
+                        <input id="latitud" type="number" formControlName="latitud" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                    <div>
+                        <label for="longitud" class="block text-sm font-medium text-gray-700 mb-1">Longitud <span class="text-red-500">*</span></label>
+                        <input id="longitud" type="number" formControlName="longitud" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                </div>
+            </fieldset>
 
-    <!-- Sección de Precio -->
-    <fieldset class="mb-6 p-4 border border-gray-200 rounded-lg">
-      <legend class="text-xl font-semibold text-gray-700 px-2">Precio</legend>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="precio" class="block text-sm font-medium text-gray-700">Precio (Monto)</label>
-          <input id="precio" type="number" formControlName="precio" required min="0"
-                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500">
-          <div *ngIf="propiedadForm.get('precio')?.invalid && (propiedadForm.get('precio')?.dirty || propiedadForm.get('precio')?.touched)" class="text-red-500 text-xs mt-1">
-            El precio debe ser un número positivo.
-          </div>
-        </div>
-        <div>
-          <label for="moneda" class="block text-sm font-medium text-gray-700">Moneda</label>
-          <select id="moneda" formControlName="moneda" required
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
-            <option value="USD">Dólar Americano (USD)</option>
-            <option value="PEN">Soles Peruanos (PEN)</option>
-            <!-- Puedes añadir más monedas si es necesario -->
-          </select>
-        </div>
-      </div>
-    </fieldset>
+            <fieldset class="mb-8 p-6 border-2 border-gray-200 rounded-xl shadow-inner bg-gray-50">
+                <legend class="text-xl font-bold text-gray-700 px-3 -ml-2 mb-4">Detalles de Precio</legend>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="precio" class="block text-sm font-medium text-gray-700 mb-1">Precio (Monto) <span class="text-red-500">*</span></label>
+                        <input id="precio" type="number" formControlName="precio" required min="0"
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        <div *ngIf="propiedadForm.get('precio')?.invalid && (propiedadForm.get('precio')?.dirty || propiedadForm.get('precio')?.touched)" class="text-red-500 text-xs mt-1">
+                            Ingresar monto valido
+                        </div>
+                    </div>
+                    <div>
+                        <label for="moneda" class="block text-sm font-medium text-gray-700 mb-1">Moneda <span class="text-red-500">*</span></label>
+                        <select id="moneda" formControlName="moneda" required
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-indigo-500 focus:border-indigo-500 bg-white transition duration-150">
+                            <option value="USD">Dólar Americano (USD)</option>
+                            <option value="PEN">Soles Peruanos (PEN)</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
 
-    <!-- Botón de Envío -->
-    <div class="flex justify-end space-x-4">
-      <button 
-        type="button" 
-        (click)="router.navigate(['/propiedades/listado'])"
-        class="inline-flex justify-center py-3 px-6 border border-gray-300 shadow-sm text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition duration-150">
-        Cancelar
-      </button>
-      <button 
-        type="submit" 
-        [disabled]="propiedadForm.invalid || cargandoDatos"
-        class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-full text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 focus:outline-none transition duration-150">
-        <i class="fas fa-save mr-2"></i> Guardar Cambios
-      </button>
+            <div class="flex justify-end space-x-4 pt-4">
+                <button 
+                    type="button" 
+                    (click)="router.navigate(['/propiedades/listado'])"
+                    [disabled]="cargandoDatos"
+                    class="inline-flex items-center py-3 px-8 border border-gray-300 shadow-lg text-base font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 disabled:opacity-50 transition duration-300 transform hover:scale-[1.02]">
+                    <i class="fas fa-times-circle mr-2"></i> Cancelar
+                </button>
+                <button 
+                    type="submit" 
+                    [disabled]="propiedadForm.invalid || cargandoDatos"
+                    class="inline-flex items-center py-3 px-8 border border-transparent shadow-lg text-base font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition duration-300 transform hover:scale-[1.02]">
+                    <i class="fas fa-save mr-2"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
     </div>
-  </form>
 </div>

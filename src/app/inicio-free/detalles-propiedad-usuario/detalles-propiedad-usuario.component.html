@@ -1,0 +1,61 @@
+<div *ngIf="property() as propertyDetail" class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
+  <header class="p-6 md:p-8 border-b border-gray-100 flex justify-between items-start">
+    <div>
+      <h1 class="text-3xl font-extrabold text-blue-900 mb-1">{{ propertyDetail.title }}</h1>
+      <p class="text-sm text-gray-500">{{ propertyDetail.address }}</p>
+    </div>
+    <div class="text-right">
+      <p class="text-2xl font-bold text-green-700">{{ formatPrice(propertyDetail.price, propertyDetail.currency) }}</p>
+      <p class="text-xs text-gray-500">{{ propertyDetail.currency }}</p>
+    </div>
+  </header>
+  
+  <div class="relative w-full aspect-[16/7] overflow-hidden bg-gray-200">
+    <img 
+      [src]="propertyDetail.image" 
+      [alt]="propertyDetail.title" 
+      class="w-full h-full object-cover"
+      onerror="this.onerror=null; this.src='https://placehold.co/1000x437/007FFF/ffffff?text=Casa+de+Playa+con+Piscina'"
+    />
+    <div class="absolute inset-0 bg-blue-500/80 flex items-center justify-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white">{{ propertyDetail.title }}</h2>
+    </div>
+  </div>
+
+  <div class="p-6 md:p-8">
+    
+    <h2 class="text-2xl font-bold text-gray-800 mb-3 border-b-2 border-indigo-100 pb-2">Descripción</h2>
+    <p class="text-gray-700 leading-relaxed mb-6">
+      {{ propertyDetail.description }}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1 flex items-center">
+          Ubicación
+        </h3>
+        <p class="text-gray-900 font-medium">{{ propertyDetail.location }}</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1 flex items-center">
+          Coordenadas
+        </h3>
+        <p class="text-gray-900 font-medium">
+          {{ propertyDetail.coordinates.lat }}, {{ propertyDetail.coordinates.lng }}
+        </p>
+      </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button
+        class="flex-1 p-3 font-semibold text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 transition-colors transform hover:scale-[1.01]"
+        (click)="handleAction('Alquilar')">
+        Alquilar
+      </button>
+      <button class="flex-1 p-3 font-semibold text-white bg-red-600 rounded-lg shadow-lg hover:bg-red-700 transition-colors transform hover:scale-[1.01]" 
+      (click)="handleAction('Cerrar')">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>

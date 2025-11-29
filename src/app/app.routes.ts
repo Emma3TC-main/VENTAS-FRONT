@@ -19,8 +19,8 @@ import { PagosComponent } from './pagos/pagos.component';
 import { ContratosComponent } from './contratos/contratos.component';
 
 import { PropiedadesVistaUsuarioComponent } from './inicio-free/propiedades-vista-usuario/propiedades-vista-usuario.component';
-import { DetallePropiedadVistaUsuarioComponent } from './propiedades/detalle-propiedad-usuario/detalle-propiedad-usuario.component';
-// NOTA: Asegúrate que la ruta de importación de este componente sea correcta.
+import { DetallesPropiedadUsuarioComponent } from './inicio-free/detalles-propiedad-usuario/detalles-propiedad-usuario.component';
+
 import { EditarPropiedadComponent } from './propiedades/editar-propiedades/editar-propiedades.component';
 import { PremiumConfirmarComponent } from './pages/premium-confirmar/premium-confirmar.component';
 import { PremiumCancelarComponent } from './pages/premium-cancelar/premium-cancelar.component';
@@ -45,8 +45,7 @@ export const routes: Routes = [
       ),
   },
 
-  //vista de pago
-
+  // vista de pago
   {
     path: 'premium/confirmar',
     component: PremiumConfirmarComponent,
@@ -60,17 +59,19 @@ export const routes: Routes = [
     component: PremiumCancelarComponent,
   },
 
-  // Vista pública de propiedades
+  // Vista pública de propiedades (BLOQUE CORREGIDO: VUELVE A SER NO ANIDADO)
   {
     path: 'propiedades-vista-usuario',
     component: PropiedadesVistaUsuarioComponent,
     title: 'Explora Propiedades',
   },
   {
-    path: 'propiedad/:id',
-    component: DetallePropiedadVistaUsuarioComponent,
+    // Ruta separada para el detalle, activa el componente en el router-outlet principal (app.component.html)
+    path: 'propiedades-vista-usuario/:id',
+    component: DetallesPropiedadUsuarioComponent,
     title: 'Detalle Propiedad',
   },
+
 
   // --- PROPIEDADES (ADMIN) ---
   { path: 'propiedades', component: ListaPropiedadesComponent },
