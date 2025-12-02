@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:8080/api'
+  apiBaseUrl: 'https://backend-rentas-126752734668.us-central1.run.app/api',
 };

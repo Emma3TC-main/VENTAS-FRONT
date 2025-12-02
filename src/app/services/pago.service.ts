@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class PagoService {
-  private apiUrl = 'http://localhost:8080/api/pagos';
+  private apiUrl = 'https://backend-rentas-126752734668.us-central1.run.app/api/pagos';
 
   constructor(private http: HttpClient) {}
 
